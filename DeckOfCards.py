@@ -69,38 +69,7 @@ class DeckOfCards:
             #self.cardGroup.dropCard(c)
             #cards+=1
             x+=12
-    """def initKlondike(self):
-        self.mode = self.INITIAL_DEAL        
-        cg = self.cardGroup
-        self.selectionRect = pygame.Rect((0,0,0,0)) # Should be Solitare
-        self.selectionCards = [] # Solitare call
-        cg.collectAll(15,15)
-        cg.shuffle()
-          
-        gt = cg.getCardAt  
-                
-        cards = 0
-        x = 10
-        y = 140
-        idx = 51
-        
-        for cols in range(7):
-            for hc in range(cards):
-                c = gt(idx)
-                idx-=1
-                c.rect.x = x
-                c.rect.y = y
-                cg.dropCard(c)
-                y+=20
-            c = gt(idx)
-            idx-=1
-            c.flip()
-            c.rect.x = x
-            c.rect.y = y
-            cg.dropCard(c)
-            cards+=1
-            x+=90
-            y=140"""     
+   
 #----Constants for hand phase-----------------  
     END_OF_HAND = 0
     INITIAL_DEAL = 1
@@ -164,34 +133,8 @@ class DeckOfCards:
         self.cardGroup.cards = cards   
         self.selectionRect = hi[2]   
         self.selectionCards = hi[3]        
-#----------------------------------------------------------------------                   
-    """def updateSelectionRect(self): # Solitare Function
-        r = None
-        for c in self.selectionCards:
-            if not r:
-                r = pygame.Rect(c.rect)
-            else:
-                r.union_ip(c.rect)        
-        r.x-=3
-        r.y-=3
-        r.width+=6
-        r.height+=6
                 
-        self.selectionRect = r"""
 
-    """def shuffleSelection(self): # Solitare Function
-        if len(self.selectionCards):
-            rectbuf = []
-            for c in self.selectionCards:
-                rectbuf.append(pygame.Rect(c.rect))
-
-            random.shuffle(self.selectionCards)                    
-
-            for i in range(len(rectbuf)):
-                self.selectionCards[i].rect = rectbuf[i]
-
-            self.cardGroup.popCards(self.selectionCards)"""                            
-        
 #-------------Help file text----------------------------- 
     text = [
         "DeckOfCards v1.0",
@@ -340,48 +283,8 @@ class DeckOfCards:
                     elif event.key == K_F4 and self.INITIAL_DEAL: # deals klondike
                         self.pushHistory("Setup Klondike") # adds item to undo
                         #deleted function executes initKlondike function
-#-----------------------THIS CODE CAN GO!------------------------------------------------------                        
-                    """elif event.key == K_LEFT: # aligns cards to the left (not sure why it is not a function?) [not sure I care to make it one since it does not have a point]
-                        if len(self.selectionCards):
-                            self.pushHistory("AlignLeft")
-                            left = self.selectionCards[0].rect.left
-                            for c in self.selectionCards:
-                                if c.rect.left<left:
-                                    left = c.rect.left
-                            for c in self.selectionCards:
-                                c.rect.left = left
-                            self.updateSelectionRect()
-                    elif event.key == K_RIGHT:
-                        if len(self.selectionCards):
-                            self.pushHistory("AlignRight")
-                            right = self.selectionCards[0].rect.right
-                            for c in self.selectionCards:
-                                if c.rect.right>right:
-                                    right = c.rect.right
-                            for c in self.selectionCards:
-                                c.rect.right = right
-                            self.updateSelectionRect()
-                    elif event.key == K_UP:
-                        if len(self.selectionCards):
-                            self.pushHistory("AlignUp")
-                            top = self.selectionCards[0].rect.top
-                            for c in self.selectionCards:
-                                if c.rect.top<top:
-                                    top = c.rect.top
-                            for c in self.selectionCards:
-                                    c.rect.top = top
-                            self.updateSelectionRect()
-                    elif event.key == K_DOWN:
-                        if len(self.selectionCards):
-                            self.pushHistory("AlignDown")
-                            bottom = self.selectionCards[0].rect.bottom
-                            for c in self.selectionCards:
-                                if c.rect.bottom>bottom:
-                                    bottom = c.rect.bottom
-                            for c in self.selectionCards:
-                                c.rect.bottom = bottom
-                            self.updateSelectionRect()"""
-#----------------------END OF CODE THAT CAN GO!------------------------------                            
+
+                          
                 elif event.type == KEYUP: #These log the CTRL/SHIFT key going up          
                     if event.key == K_LCTRL:
                         lctrlDown = False        
@@ -404,168 +307,6 @@ class DeckOfCards:
                                 tempY = self.selectedCard.rect.y
                                 self.selectedCard.rect.y = tempY - 20
                                 self.selectionCards.append(self.selectedCard)
-                                
-# ---------------------------------Future Deletion - Solitare Code------------------------------------------                
-                    """if self.mode == self.NOTHING and (event.button in [1,2,3]): # Not sure why and 'and' since it wouldn't be true if MOUSEBUTTONDOWN == True?
-                        #Check if we are inside selection.
-                        if self.selectionRect.width > 0 and self.selectionRect.height > 0:
-                            if self.selectionRect.collidepoint(event.pos[0],event.pos[1]): # collidepoint tests if it is within a selection rectangle
-                                
-                                if lshiftDown or rshiftDown:
-                                
-                                    if len(self.selectionCards) >= 2:
-                                        self.pushHistory("Collecting/spreading selection")
-
-                                        cx = self.selectionCards[0].rect.centerx
-                                        cy = self.selectionCards[0].rect.centery
-                                        for c in self.selectionCards:
-                                            c.rect.centerx = cx
-                                            c.rect.centery = cy
-                                        self.updateSelectionRect()
-
-                                        if event.button == 3:
-                                            self.selectionCards.reverse()
-                                            for c in self.selectionCards:
-                                                c.flip()
-                                        self.cardGroup.popCards(self.selectionCards)
-                                    
-                                        pygame.mouse.set_pos((cx,cy))
-                                        self.mode = self.SELECTION_SPREAD_INIT
-                                else:
-                                    self.pushHistory("Pop/flip selection")
-                                    self.mode = self.SELECTION_SELECTED
-                                    if event.button == 3:
-                                        self.selectionCards.reverse()
-                                        for c in self.selectionCards:
-                                            c.flip()
-                                    self.cardGroup.popCards(self.selectionCards)                            
-                        # Clears selection
-                        if self.mode == self.NOTHING:                            
-                            if len(self.selectionCards):
-                                self.pushHistory("Drop selection cards")
-                                self.cardGroup.popCards(self.selectionCards)                            
-                                self.cardGroup.dropCards(self.selectionCards)
-                                self.selectionCards = []
-                                self.selectionRect.size=(0,0)
-                        
-                        #Check if any card is selected.
-                        if self.mode == self.NOTHING:                            
-                            pop = popsingle
-                            if event.button == 2:
-                                popsingle = True
-                            self.pushHistory("Pop/flip selected card")
-                            self.selectedCard = self.cardGroup.getCard(event.pos[0],event.pos[1],popsingle) # possible popsingle issue from changing to True/False                      
-                            if event.button == 2:
-                                popsingle = pop
-                            if self.selectedCard:                                                               
-                                self.mode = self.CARD_SELECTED
-                                if event.button == 3:
-                                    self.selectedCard.flip()                    
-                            else:
-                                self.history.pop()
-                        #Init a new selection rectangle.
-                        if self.mode == self.NOTHING:                                 
-                            self.selectionStart = (event.pos[0],event.pos[1])
-                            self.mode = self.DRAW_SELECTION
-                                                        
-                elif event.type == MOUSEBUTTONUP and viewhelp == False:
-                
-                        if self.mode == self.SELECTION_SELECTED:
-                            self.mode = self.NOTHING
-
-                        elif self.mode == self.SELECTION_SPREAD:
-                            self.mode = self.NOTHING
-
-                        elif self.mode == self.SELECTION_SPREAD_INIT:
-                            self.mode = self.NOTHING
-                
-                        elif self.mode == self.CARD_SELECTED:
-                            #self.pushHistory("Drop card")
-                            self.cardGroup.dropCard(self.selectedCard)
-                            self.selectedCard = None 
-                            self.mode = self.NOTHING
-                            
-                        elif self.mode == self.DRAW_SELECTION:
-                            #see if we have selected any cards
-                            if self.selectionRect.width > 0 and self.selectionRect.height > 0:
-                                self.pushHistory("Select cards")
-                                self.selectionRect,self.selectionCards = self.cardGroup.getCards(self.selectionRect)
-                                if not len(self.selectionCards):
-                                    self.history.pop()
-                            self.mode = self.NOTHING
-                            
-                elif event.type == MOUSEMOTION and viewhelp == False:
-                    if event.buttons[0] or event.buttons[1] or event.buttons[2]:
-                        if self.mode == self.SELECTION_SELECTED:
-                            #Handle the drag of a selection rectangle.
-                            if len(self.selectionCards):
-                                self.selectionRect.topleft = (self.selectionRect.x+event.rel[0],self.selectionRect.y+event.rel[1])
-                                for c in self.selectionCards:
-                                    c.move(event.rel[0],event.rel[1]);
-
-                        elif self.mode == self.SELECTION_SPREAD_INIT:
-                            self.mode = self.SELECTION_SPREAD
-
-                        elif self.mode == self.SELECTION_SPREAD:
-                            #Handle the spread of a selection rectangle.
-                            l = len(self.selectionCards)
-                            if l>=2:          
-                            
-                                c = self.selectionCards[l-1]
-                                fc = self.selectionCards[0]
-                            
-                                dx = event.pos[0]-fc.rect.centerx
-                                dy = event.pos[1]-fc.rect.centery                                                      
-                                
-                                if abs(dx) > abs(dy):
-                                    cnt = 0                       
-                                    d = float(dx)/float(l-1)
-                                    for mc in self.selectionCards:
-                                        mc.rect.centery = fc.rect.centery
-                                        mc.rect.centerx = fc.rect.centerx+int(d*cnt)
-                                        cnt += 1
-                                    c.rect.centerx = event.pos[0]
-                                    c.rect.centery = fc.rect.centery
-                                else:
-                                    cnt = 0 
-                                    d = float(dy)/float(l-1)
-                                    for mc in self.selectionCards:
-                                        mc.rect.centerx = fc.rect.centerx
-                                        mc.rect.centery = fc.rect.centery+int(d*cnt)
-                                        cnt += 1
-                                    c.rect.centery = event.pos[1]
-                                    c.rect.centerx = fc.rect.centerx
-
-                                r = pygame.Rect(c.rect)
-                                r.union_ip(self.selectionCards[0].rect)        
-                                r.x-=3
-                                r.y-=3
-                                r.width+=6
-                                r.height+=6
-                                self.selectionRect = r
-                  
-                        elif self.mode == self.CARD_SELECTED:
-                            #Handle the drag of a selected card.
-                            self.selectedCard.move(event.rel[0],event.rel[1]); # may be helpful for moving a discard up
-                        
-                        elif self.mode == self.DRAW_SELECTION: 
-                            #Handle the selection rectangle
-                            #self.selectionRect.size=(event.pos[0]-self.selectionRect.x,event.pos[1]-self.selectionRect.y)
-
-                            if event.pos[0] <= self.selectionStart[0]:
-                                self.selectionRect.x = self.selectionStart[0]-(self.selectionStart[0]-event.pos[0])
-                                self.selectionRect.width = self.selectionStart[0]-event.pos[0]
-                            else:                            
-                                self.selectionRect.x=self.selectionStart[0]
-                                self.selectionRect.width=event.pos[0]-self.selectionStart[0]
-
-                            if event.pos[1] <= self.selectionStart[1]:
-                                self.selectionRect.y = self.selectionStart[1]-(self.selectionStart[1]-event.pos[1])
-                                self.selectionRect.height = self.selectionStart[1]-event.pos[1]
-                            else:                            
-                                self.selectionRect.y=self.selectionStart[1]
-                                self.selectionRect.height=event.pos[1]-self.selectionStart[1]"""
-# ----------------------------------------------------------------------------------------------------------------------------                          
                     
             # DRAWING - Code good for now.           
             self.screen.fill((0x00, 0xb0, 0x00))
