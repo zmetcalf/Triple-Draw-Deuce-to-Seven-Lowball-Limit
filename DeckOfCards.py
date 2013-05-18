@@ -1,22 +1,79 @@
-
+"""
+    Original Source Code from http://arainyday.se/projects/python/DeckOfCards/
+    Card graphics are GPL and made by John K. Estell.
+    Source code are GPL and made by me (John Eriksson).
+    Source code modifications from Solitare to 2-7 Triple Draw Lowball 
+        are GPL and made by Zach Metcalf
+"""
 #/usr/bin/env python
+#pygame.init() called in main loop
+# started changing 1,0 to True, False before reading PEP 285 but may continue for readability.
 
-import os, pygame,math
-from pygame.locals import *
+#popsingle can go - only applicable to solitare games.
+
+# must find dropCard
+
+import os, pygame, math, sys # added sys to make it work better w/win & mac quit functions
+from pygame.locals import * # Imports all the constants
 import random
 
 from CardImages import CardImages
 from CardGroup import CardGroup
 from Card import Card
-                             
+from Button import Button
+
 class DeckOfCards:
 
+    def dealHands(self):
+        self.mode = self.INITIAL_DEAL # says this is the initial deal
+        #dealerDeck = self.cardGroup # initializes cardGroup object dealer deck
+        self.cardGroup.collectAll(15,15) # puts cards face down on deal deck
+        self.cardGroup.shuffle() # shuffle's cards
 
-    def initKlondike(self):
-        self.mode = self.NOTHING        
+        self.cardIndex = 0
+        x1 = 15
+        y1 = 215
+        x2 = 15
+        y2 = 415
+
+        self.burnDeck.append(self.cardGroup.cards[self.cardIndex])
+        self.cardIndex += 1
+        self.burnDeck[0].rect.x = 500
+        self.burnDeck[0].rect.y = 500
+        self.burnDeck[0].flip()
+        for hand in range(5):
+            self.northDeck.append(self.cardGroup.cards[self.cardIndex])
+            self.northDeck[hand].rect.x = x1
+            self.northDeck[hand].rect.y = y1
+            self.northDeck[hand].flip()
+            x1 += 20
+            self.cardIndex += 1
+            
+            self.southDeck.append(self.cardGroup.cards[self.cardIndex])
+            self.southDeck[hand].rect.x = x2
+            self.southDeck[hand].rect.y = y2
+            self.southDeck[hand].flip()
+            x2 += 20
+            self.cardIndex += 1
+            # dealerDeck.dropCard(displayCard) # not sure I know what this does
+        
+        
+        x = 15
+        y = 100
+        for cols in range(41): #change to idx
+            c = self.cardGroup.cards[self.cardIndex]
+            self.cardIndex+=1
+            c.flip()
+            c.rect.x = x
+            c.rect.y = y
+            #self.cardGroup.dropCard(c)
+            #cards+=1
+            x+=12
+    """def initKlondike(self):
+        self.mode = self.INITIAL_DEAL        
         cg = self.cardGroup
-        self.selectionRect = pygame.Rect((0,0,0,0))
-        self.selectionCards = []  
+        self.selectionRect = pygame.Rect((0,0,0,0)) # Should be Solitare
+        self.selectionCards = [] # Solitare call
         cg.collectAll(15,15)
         cg.shuffle()
           
@@ -43,15 +100,14 @@ class DeckOfCards:
             cg.dropCard(c)
             cards+=1
             x+=90
-            y=140
-  
-    NOTHING = 0
-    DRAW_SELECTION = 1
-    CARD_SELECTED = 2
-    SELECTION_SELECTED = 3
-    SELECTION_SPREAD_INIT = 4
-    SELECTION_SPREAD = 5
-
+            y=140"""     
+#----Constants for hand phase-----------------  
+    END_OF_HAND = 0
+    INITIAL_DEAL = 1
+    FIRST_DRAW = 2
+    SECOND_DRAW= 3
+    THIRD_DRAW = 4
+#----History Constant a list-----------------
     MAX_HISTORY = 30
     history = []
     
@@ -85,7 +141,7 @@ class DeckOfCards:
             selcards = []  
        
         self.history.append([cards,cardinfo,selrect,selcards,desc])
- 
+#---------Undo last action--------------------------------------------- 
     def popHistory(self):
         if not len(self.history):
             return
@@ -108,8 +164,8 @@ class DeckOfCards:
         self.cardGroup.cards = cards   
         self.selectionRect = hi[2]   
         self.selectionCards = hi[3]        
-                   
-    def updateSelectionRect(self):
+#----------------------------------------------------------------------                   
+    """def updateSelectionRect(self): # Solitare Function
         r = None
         for c in self.selectionCards:
             if not r:
@@ -121,9 +177,9 @@ class DeckOfCards:
         r.width+=6
         r.height+=6
                 
-        self.selectionRect = r
+        self.selectionRect = r"""
 
-    def shuffleSelection(self):
+    """def shuffleSelection(self): # Solitare Function
         if len(self.selectionCards):
             rectbuf = []
             for c in self.selectionCards:
@@ -134,56 +190,62 @@ class DeckOfCards:
             for i in range(len(rectbuf)):
                 self.selectionCards[i].rect = rectbuf[i]
 
-            self.cardGroup.popCards(self.selectionCards)                            
+            self.cardGroup.popCards(self.selectionCards)"""                            
         
- 
+#-------------Help file text----------------------------- 
     text = [
         "DeckOfCards v1.0",
         "-----------------------",
         "F1 - Display this help text.",
         "F2 - Collect cards and shuffle deck.",
         "F3 - Setup for Klondike solitaire.",
-        "Arrow keys - Align selected cards.",
-        "Left mouse - Move or select cards.",
-        "Right mouse - Flip single or selected.",
-        "Middle mouse - Pick single card.",
-        "Mouse click + shift - Collect selected cards.",
-        "Mouse drag + shift - Layout selected cards.",
+        "GONE:Arrow keys - Align selected cards.",
+        "GONE:Left mouse - Move or select cards.",
+        "GONE:Right mouse - Flip single or selected.",
+        "GONE:Middle mouse - Pick single card.",
+        "GONE:Mouse click + shift - Collect selected cards.",
+        "GONE: Mouse drag + shift - Layout selected cards.",
         "Ctrl+T - Toggle sticky cards.",
         "Ctrl+S - Shuffle selected cards.",
-	"Ctrl+Z - Undo latest action.",
+        "Ctrl+Z - Undo latest action.",
         "-----------------------",
         "press any key to continue"]
+#---------------------------------------------------------
         
-
+# start of game 
     def mainLoop(self):    
-        pygame.init()    
+        pygame.init() # required for pygame
 
-        self.screen = pygame.display.set_mode((640, 480),HWSURFACE|RESIZABLE)
-        pygame.display.set_caption('DeckOfCards - v1.0')
+        self.screen = pygame.display.set_mode((640, 480),HWSURFACE|RESIZABLE) # intializes screen
+        pygame.display.set_caption('Triple Draw Deuce to Seven Lowball Limit ') # sets caption of window
                               
-        self.selectedCard = None
+        self.selectedCard = None # argument of selectedCard defined
     
-        self.selectionRect = pygame.Rect((0,0,0,0))
-        self.selectionCards = []  
+        self.selectionRect = pygame.Rect((0,0,0,0)) # not sure if this creates pygame object, but should select a rectangle of pixels?
+        self.selectionCards = []  # initialize list of seclectionCards
                
-        ci = CardImages()
+        ci = CardImages() # ci creates a deck of cards
  
-        cards = []
+        cards = [] # initialize list of cards
+        
+        # loop through 52 cards - cards.append adds card to list -
+        # Card() Creates object with the variables from ci which is list cardImages to pull from
+        # the remaining parts in Card() 30, 30  places the top left of card at 30 right 30 down
         for i in range(0,52):
-            cards.append(Card(ci.getCardNbr(i),ci.getBack(),30,30))
-
-	#second deck
-        #for i in range(0,52):
-        #    cards.append(Card(ci.getCardNbr(i),ci.getBack(),15,15))
+            cards.append(Card(ci.getCardNbr(i),ci.getBack(), 30, 30, i)) 
                    
-        self.cardGroup = CardGroup(cards)
-        self.cardGroup.shuffle()        
+        self.cardGroup = CardGroup(cards) # creates cardGroup object from card list
+        self.cardGroup.shuffle() # uses shuffle function on cardGroup
+         
+      
+        self.burnDeck = []
+        self.northDeck = []
+        self.southDeck = []
                 
-        self.mode = self.NOTHING        
+        self.mode = self.END_OF_HAND # sets game at    
                         
-        popsingle = 0
-
+        # popsingle = False # False = sticky cards True = No sticky; had to turn on temporarly for clicking on cards
+#-------------------Prints menu on screen--------------------
         self.helptext = pygame.Surface((380,420),1).convert()
         self.helptext.fill((0x0, 0x0, 0x0))
         self.helptext.set_alpha(200);
@@ -199,70 +261,87 @@ class DeckOfCards:
           ty += 25
           self.helptext.blit(img,r.topleft)
         
-        viewhelp = 1
+        viewhelp = True # changed this and all references to boolean
         sr = self.screen.get_rect()
-        self.helptextRect.centerx = sr.centerx
-        self.helptextRect.centery = sr.centery
+        self.helptextRect.centerx = sr.centerx #autocenter help on screen
+        self.helptextRect.centery = sr.centery #autocenter help on screen       
+#---------------------Test Button---------------------------------
+        self.dealButton = Button("Deal")
+
+
+#-----------------------------------------------------------------
                          
-        lctrlDown = 0
-        rctrlDown = 0
-        lshiftDown = 0
-        rshiftDown = 0
+        lctrlDown = False
+        rctrlDown = False
+        lshiftDown = False
+        rshiftDown = False
                                             
-        while 1:                                                                      
+        while True:                                                                      
             for event in pygame.event.get():
                 if event.type == QUIT:
-                    return
+                    pygame.quit(); sys.exit(); # used this instead of return for better compatability
+                    #return # uses return to break infinite loop
+                # performs resize of screen and help box
                 elif event.type == VIDEORESIZE:
                     self.screen = pygame.display.set_mode(event.size,HWSURFACE|RESIZABLE)
                     if viewhelp:
                         sr = self.screen.get_rect()
                         self.helptextRect.centerx = sr.centerx
                         self.helptextRect.centery = sr.centery
+                # waits for keystroke to preform action        
                 elif event.type == KEYDOWN:          
-                    #print "key = %s" % str(event.key)
-                    #print "keyname = %s" % pygame.key.name(event.key)
+                    #print "key = %s" % str(event.key) #looks like author's old test code
+                    #print "keyname = %s" % pygame.key.name(event.key) #same here
                     if viewhelp:
                         if event.key == K_ESCAPE:
-                            return                    
-                        viewhelp=0
-                        continue                                                  
+                            pygame.quit(); sys.exit(); # used this instead of return
+                            # return # uses return to break infinite loop               
+                        viewhelp=False # press any key and screen goes away
+                        continue # continue restarts loop so it does not execute any keystroke                                                 
                     if event.key == K_ESCAPE:
-                        return                    
-                    elif event.key == K_LCTRL:
-                        lctrlDown = 1        
-                    elif event.key == K_RCTRL:
-                        rctrlDown = 1        
-                    elif event.key == K_LSHIFT:
-                        lshiftDown = 1        
-                    elif event.key == K_RSHIFT:
-                        rshiftDown = 1        
-                    elif event.key == 122 and (lctrlDown or rctrlDown):                        
-                            self.popHistory()
-                    elif event.key == 116 and (lctrlDown or rctrlDown):                        
-                        if popsingle:
-                            popsingle = 0
+                        pygame.quit(); sys.exit(); # used this instead of return
+                        # return # uses return to break infinite loop                   
+                    elif event.key == K_LCTRL: # code to show ctrl key pushed
+                        lctrlDown = True        
+                    elif event.key == K_RCTRL: # code to show ctrl key pushed
+                        rctrlDown = True        
+                    elif event.key == K_LSHIFT: # code to show shift key pushed
+                        lshiftDown = True        
+                    elif event.key == K_RSHIFT: # code to show shift key pushed
+                        rshiftDown = True        
+                    elif event.key == K_z and (lctrlDown or rctrlDown): # Changed from keynumber 122 to K_z http://www.pygame.org/docs/ref/key.html Did this to create continuity and readability                
+                            self.popHistory() # triggers undo function
+                    elif event.key == K_t and (lctrlDown or rctrlDown): # Changed from keynumber 116 to K_t                       
+                        if popsingle: #toggles 'sticky'
+                            popsingle = False
                         else:
-                            popsingle = 1
-                    elif event.key == 115 and (lctrlDown or rctrlDown):                        
-                        self.pushHistory("Selection shuffle")
-                        self.shuffleSelection()
-                    elif event.key == K_F1:
-                        if self.mode == self.NOTHING:
-                            sr = self.screen.get_rect()
+                            popsingle = True
+                    elif event.key == K_s and (lctrlDown or rctrlDown):    # Changed from keynumber 115 to K_s                   
+                        self.pushHistory("Selection shuffle") # Adds item to history for undo
+                        self.shuffleSelection() # Shuffles selected cards - testing mechinism, but may be useful in large 2-7 Triple Draw game
+                    elif event.key == K_F1: # display's help file
+                        if self.mode == self.END_OF_HAND:
+                            sr = self.screen.get_rect() # if you comment out this and the next two lines, it does not center on reload
                             self.helptextRect.centerx = sr.centerx
                             self.helptextRect.centery = sr.centery                            
-                            viewhelp = 1
-                    elif event.key == K_F2:
-                        self.pushHistory("F2")
-                        self.selectionRect = pygame.Rect((0,0,0,0))
-                        self.selectionCards = []  
-                        self.cardGroup.collectAll(30,30)
-                        self.cardGroup.shuffle()
-                    elif event.key == K_F3:
-                        self.pushHistory("Setup Klondike")
-                        self.initKlondike()
-                    elif event.key == K_LEFT:
+                            viewhelp = True
+                    elif event.key == K_F2: # collects cards and shuffle's deck
+                        self.pushHistory("F2") # adds item to undo
+                        self.selectionRect = pygame.Rect((0,0,0,0)) # clears selction rectangle from screen
+                        self.selectionCards = [] # clears selection cards from list
+                        self.burnDeck = []
+                        self.northDeck = []
+                        self.southDeck = []
+                        self.cardGroup.collectAll(30,30) # moves cards to 'talon'
+                        self.cardGroup.shuffle() # shuffle's cards
+                    elif event.key == K_F3: # deals hands
+                        self.pushHistory("Setup Klondike") # adds item to undo
+                        self.dealHands() # deals hand
+                    elif event.key == K_F4 and self.INITIAL_DEAL: # deals klondike
+                        self.pushHistory("Setup Klondike") # adds item to undo
+                        #deleted function executes initKlondike function
+#-----------------------THIS CODE CAN GO!------------------------------------------------------                        
+                    """elif event.key == K_LEFT: # aligns cards to the left (not sure why it is not a function?) [not sure I care to make it one since it does not have a point]
                         if len(self.selectionCards):
                             self.pushHistory("AlignLeft")
                             left = self.selectionCards[0].rect.left
@@ -301,22 +380,37 @@ class DeckOfCards:
                                     bottom = c.rect.bottom
                             for c in self.selectionCards:
                                 c.rect.bottom = bottom
-                            self.updateSelectionRect()
-                elif event.type == KEYUP:          
+                            self.updateSelectionRect()"""
+#----------------------END OF CODE THAT CAN GO!------------------------------                            
+                elif event.type == KEYUP: #These log the CTRL/SHIFT key going up          
                     if event.key == K_LCTRL:
-                        lctrlDown = 0        
+                        lctrlDown = False        
                     elif event.key == K_RCTRL:
-                        rctrlDown = 0        
+                        rctrlDown = False        
                     elif event.key == K_LSHIFT:
-                        lshiftDown = 0        
+                        lshiftDown = False        
                     elif event.key == K_RSHIFT:
-                        rshiftDown = 0        
+                        rshiftDown = False        
                         
-                elif event.type == MOUSEBUTTONDOWN and viewhelp == 0:
-                    if self.mode == self.NOTHING and (event.button in [1,2,3]):                        
+                elif event.type == MOUSEBUTTONDOWN and viewhelp == False: #starts mouseclick code if help is not showing
+                    if event.button == 1:
+                        self.selectedCard = self.cardGroup.getOneCard(
+                            event.pos[0],event.pos[1]) # code to select a card
+                        if(self.selectedCard != None):
+                            if  any(self.selectedCard == val for val in
+                                self.selectionCards) == False and any(
+                                self.selectedCard == val for val in
+                                self.southDeck):
+                                tempY = self.selectedCard.rect.y
+                                self.selectedCard.rect.y = tempY - 20
+                                self.selectionCards.append(self.selectedCard)
+                                
+# ---------------------------------Future Deletion - Solitare Code------------------------------------------                
+                    """if self.mode == self.NOTHING and (event.button in [1,2,3]): # Not sure why and 'and' since it wouldn't be true if MOUSEBUTTONDOWN == True?
                         #Check if we are inside selection.
                         if self.selectionRect.width > 0 and self.selectionRect.height > 0:
-                            if self.selectionRect.collidepoint(event.pos[0],event.pos[1]):
+                            if self.selectionRect.collidepoint(event.pos[0],event.pos[1]): # collidepoint tests if it is within a selection rectangle
+                                
                                 if lshiftDown or rshiftDown:
                                 
                                     if len(self.selectionCards) >= 2:
@@ -345,7 +439,7 @@ class DeckOfCards:
                                         for c in self.selectionCards:
                                             c.flip()
                                     self.cardGroup.popCards(self.selectionCards)                            
-
+                        # Clears selection
                         if self.mode == self.NOTHING:                            
                             if len(self.selectionCards):
                                 self.pushHistory("Drop selection cards")
@@ -358,11 +452,11 @@ class DeckOfCards:
                         if self.mode == self.NOTHING:                            
                             pop = popsingle
                             if event.button == 2:
-                            	popsingle = 1
+                                popsingle = True
                             self.pushHistory("Pop/flip selected card")
-                            self.selectedCard = self.cardGroup.getCard(event.pos[0],event.pos[1],popsingle)                        
+                            self.selectedCard = self.cardGroup.getCard(event.pos[0],event.pos[1],popsingle) # possible popsingle issue from changing to True/False                      
                             if event.button == 2:
-                            	popsingle = pop
+                                popsingle = pop
                             if self.selectedCard:                                                               
                                 self.mode = self.CARD_SELECTED
                                 if event.button == 3:
@@ -374,7 +468,7 @@ class DeckOfCards:
                             self.selectionStart = (event.pos[0],event.pos[1])
                             self.mode = self.DRAW_SELECTION
                                                         
-                elif event.type == MOUSEBUTTONUP and viewhelp == 0:
+                elif event.type == MOUSEBUTTONUP and viewhelp == False:
                 
                         if self.mode == self.SELECTION_SELECTED:
                             self.mode = self.NOTHING
@@ -400,7 +494,7 @@ class DeckOfCards:
                                     self.history.pop()
                             self.mode = self.NOTHING
                             
-                elif event.type == MOUSEMOTION and viewhelp == 0:
+                elif event.type == MOUSEMOTION and viewhelp == False:
                     if event.buttons[0] or event.buttons[1] or event.buttons[2]:
                         if self.mode == self.SELECTION_SELECTED:
                             #Handle the drag of a selection rectangle.
@@ -452,7 +546,7 @@ class DeckOfCards:
                   
                         elif self.mode == self.CARD_SELECTED:
                             #Handle the drag of a selected card.
-                            self.selectedCard.move(event.rel[0],event.rel[1]);
+                            self.selectedCard.move(event.rel[0],event.rel[1]); # may be helpful for moving a discard up
                         
                         elif self.mode == self.DRAW_SELECTION: 
                             #Handle the selection rectangle
@@ -470,13 +564,14 @@ class DeckOfCards:
                                 self.selectionRect.height = self.selectionStart[1]-event.pos[1]
                             else:                            
                                 self.selectionRect.y=self.selectionStart[1]
-                                self.selectionRect.height=event.pos[1]-self.selectionStart[1]
-                          
+                                self.selectionRect.height=event.pos[1]-self.selectionStart[1]"""
+# ----------------------------------------------------------------------------------------------------------------------------                          
                     
-            # DRAWING             
+            # DRAWING - Code good for now.           
             self.screen.fill((0x00, 0xb0, 0x00))
 
             self.cardGroup.draw(self.screen)
+            self.dealButton.draw(self.screen, 0, 0)
 
             if self.selectionRect.width > 0 and self.selectionRect.height > 0:
                 pygame.draw.rect(self.screen,(0xff,0xff,0x00),self.selectionRect,3)

@@ -1,4 +1,4 @@
-import os, pygame,math
+import os, pygame, math
 from pygame.locals import *
 import random
                              
@@ -76,7 +76,7 @@ class CardGroup:
             rect.size = (0,0)
             return(rect,[]) 
     
-    def getCard(self,x,y,popsingle=0):
+    def getCard(self,x,y,popsingle=False):
         for i in range(len(self.cards)-1,-1,-1):
             if self.cards[i].rect.collidepoint(x, y):
                 fc = self.cards.pop(i)
@@ -99,6 +99,15 @@ class CardGroup:
                 return fc
                        
         return None
+        
+    def getOneCard(self,x,y): # Copy of getCard() to rework
+        for i in range(len(self.cards)-1,-1,-1): # Loop iterates until it reaches the card clicked
+            if self.cards[i].rect.collidepoint(x, y):
+                fc = self.cards[i] # possible rework of old code
+                # fc = self.cards.pop(i) # This line and the next, moves the card around the CardGroup
+                # self.cards.append(fc) # commented out will make cards disappear
+                return fc # returns clicked on card
+        return None # Returns none if clicking on green background
 
     def dropCard(self,card):
         idx = self.cards.index(card)
