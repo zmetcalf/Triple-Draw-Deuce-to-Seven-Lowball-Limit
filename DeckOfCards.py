@@ -69,7 +69,10 @@ class DeckOfCards:
             #self.cardGroup.dropCard(c)
             #cards+=1
             x+=12
-   
+    
+    def drawCards(self):
+        self.mode +=1
+    
 #----Constants for hand phase-----------------  
     END_OF_HAND = 0
     INITIAL_DEAL = 1
@@ -197,12 +200,12 @@ class DeckOfCards:
         font = pygame.font.Font("FreeSans.ttf", 18)
         ty = 8
         for t in self.text:
-          img = font.render(t, 1, (0xff, 0xff, 0))
-          r = img.get_rect()
-          r.top = ty
-          r.centerx = self.helptextRect.centerx
-          ty += 25
-          self.helptext.blit(img,r.topleft)
+            img = font.render(t, 1, (0xff, 0xff, 0))
+            r = img.get_rect()
+            r.top = ty
+            r.centerx = self.helptextRect.centerx
+            ty += 25
+            self.helptext.blit(img,r.topleft)
         
         viewhelp = True # changed this and all references to boolean
         sr = self.screen.get_rect()
