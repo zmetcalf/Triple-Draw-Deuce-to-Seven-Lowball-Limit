@@ -160,7 +160,7 @@ class DeckOfCards:
         pygame.init() # required for pygame
 
         self.screen = pygame.display.set_mode((640, 480),HWSURFACE|RESIZABLE) # intializes screen
-        pygame.display.set_caption('Triple Draw Deuce to Seven Lowball Limit ') # sets caption of window
+        pygame.display.set_caption('Triple Draw Deuce to Seven Lowball Limit') # sets caption of window
                               
         self.selectedCard = None # argument of selectedCard defined
     
@@ -209,7 +209,7 @@ class DeckOfCards:
         self.helptextRect.centerx = sr.centerx #autocenter help on screen
         self.helptextRect.centery = sr.centery #autocenter help on screen       
 #---------------------Test Button---------------------------------
-        self.dealButton = Button("Deal")
+        self.dealButton = Button("Deal", 400, 400)
 
 
 #-----------------------------------------------------------------
@@ -307,12 +307,14 @@ class DeckOfCards:
                                 tempY = self.selectedCard.rect.y
                                 self.selectedCard.rect.y = tempY - 20
                                 self.selectionCards.append(self.selectedCard)
-                    
+                        if(self.dealButton.pressed(event.pos[0], event.pos[1])):
+                            self.dealHands()
+                            
             # DRAWING - Code good for now.           
             self.screen.fill((0x00, 0xb0, 0x00))
 
             self.cardGroup.draw(self.screen)
-            self.dealButton.draw(self.screen, 0, 0)
+            self.dealButton.draw(self.screen)
 
             if self.selectionRect.width > 0 and self.selectionRect.height > 0:
                 pygame.draw.rect(self.screen,(0xff,0xff,0x00),self.selectionRect,3)
