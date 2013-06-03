@@ -17,5 +17,10 @@ class Button:
         surface.blit(self.textImage, (self.x + 30, self.y + 15))
         
     def pressed(self, x, y):
-        if(self.x < x and self.x + 100 > x and self.y < y and self.y + 50 > y):
+        if self.x < x and self.x + 100 > x and self.y < y and self.y + 50 > y:
             return True
+    
+    def changeName(self, newName):
+        self.textImage = pygame.font.Font("FreeSans.ttf", 18).render(
+                                        newName, True, (0, 0, 0))
+

@@ -1,7 +1,7 @@
 """
     Original Source Code from http://arainyday.se/projects/python/DeckOfCards/
     Card graphics are GPL and made by John K. Estell.
-    Source code are GPL and made by me (John Eriksson).
+    Source code are GPL and made by John Eriksson.
     Source code modifications from Solitare to 2-7 Triple Draw Lowball 
         are GPL and made by Zach Metcalf
 """
@@ -57,7 +57,7 @@ class DeckOfCards:
             self.cardIndex += 1
             # dealerDeck.dropCard(displayCard) # not sure I know what this does
         
-        
+        # Shows remaining deck
         x = 15
         y = 100
         for cols in range(41): #change to idx
@@ -70,7 +70,7 @@ class DeckOfCards:
             #cards+=1
             x+=12
     
-    def drawCards(self):
+    def advancePlay(self):
         self.mode +=1
     
 #----Constants for hand phase-----------------  
@@ -79,7 +79,9 @@ class DeckOfCards:
     FIRST_DRAW = 2
     SECOND_DRAW= 3
     THIRD_DRAW = 4
-#----History Constant a list-----------------
+
+#----KEEP HISTORY FOR POSSIBLE HAND ANALYSIS---
+#----History Constant a list-------------------
     MAX_HISTORY = 30
     history = []
     
@@ -106,7 +108,6 @@ class DeckOfCards:
             cardinfo.append(info)
         
         if len(self.selectionCards):
-            selrect = pygame.Rect(self.selectionRect)
             selcards = self.selectionCards[:]
         else:
             selrect = pygame.Rect((0,0,0,0))
@@ -133,24 +134,17 @@ class DeckOfCards:
             cards[i].selected = ci[4]            
             i+=1
             
-        self.cardGroup.cards = cards   
-        self.selectionRect = hi[2]   
+        self.cardGroup.cards = cards    
         self.selectionCards = hi[3]        
                 
 
 #-------------Help file text----------------------------- 
     text = [
-        "DeckOfCards v1.0",
+        "Triple Draw 2-7 Lowball Limit Pre-Alpha",
         "-----------------------",
         "F1 - Display this help text.",
         "F2 - Collect cards and shuffle deck.",
         "F3 - Setup for Klondike solitaire.",
-        "GONE:Arrow keys - Align selected cards.",
-        "GONE:Left mouse - Move or select cards.",
-        "GONE:Right mouse - Flip single or selected.",
-        "GONE:Middle mouse - Pick single card.",
-        "GONE:Mouse click + shift - Collect selected cards.",
-        "GONE: Mouse drag + shift - Layout selected cards.",
         "Ctrl+T - Toggle sticky cards.",
         "Ctrl+S - Shuffle selected cards.",
         "Ctrl+Z - Undo latest action.",
@@ -190,7 +184,6 @@ class DeckOfCards:
                 
         self.mode = self.END_OF_HAND # sets game at    
                         
-        # popsingle = False # False = sticky cards True = No sticky; had to turn on temporarly for clicking on cards
 #-------------------Prints menu on screen--------------------
         self.helptext = pygame.Surface((380,420),1).convert()
         self.helptext.fill((0x0, 0x0, 0x0))
@@ -273,7 +266,6 @@ class DeckOfCards:
                             viewhelp = True
                     elif event.key == K_F2: # collects cards and shuffle's deck
                         self.pushHistory("F2") # adds item to undo
-                        self.selectionRect = pygame.Rect((0,0,0,0)) # clears selction rectangle from screen
                         self.selectionCards = [] # clears selection cards from list
                         self.burnDeck = []
                         self.northDeck = []
@@ -283,10 +275,6 @@ class DeckOfCards:
                     elif event.key == K_F3: # deals hands
                         self.pushHistory("Setup Klondike") # adds item to undo
                         self.dealHands() # deals hand
-                    elif event.key == K_F4 and self.INITIAL_DEAL: # deals klondike
-                        self.pushHistory("Setup Klondike") # adds item to undo
-                        #deleted function executes initKlondike function
-
                           
                 elif event.type == KEYUP: #These log the CTRL/SHIFT key going up          
                     if event.key == K_LCTRL:
@@ -302,7 +290,7 @@ class DeckOfCards:
                     if event.button == 1:
                         self.selectedCard = self.cardGroup.getOneCard(
                             event.pos[0],event.pos[1]) # code to select a card
-                        if(self.selectedCard != None):
+                        if self.selectedCard != None:
                             if  any(self.selectedCard == val for val in
                                 self.selectionCards) == False and any(
                                 self.selectedCard == val for val in
@@ -310,8 +298,9 @@ class DeckOfCards:
                                 tempY = self.selectedCard.rect.y
                                 self.selectedCard.rect.y = tempY - 20
                                 self.selectionCards.append(self.selectedCard)
-                        if(self.dealButton.pressed(event.pos[0], event.pos[1])):
+                        if self.dealButton.pressed(event.pos[0], event.pos[1]):
                             self.dealHands()
+                            self.dealButton.changeName("Draw")
                             
             # DRAWING - Code good for now.           
             self.screen.fill((0x00, 0xb0, 0x00))
@@ -319,15 +308,11 @@ class DeckOfCards:
             self.cardGroup.draw(self.screen)
             self.dealButton.draw(self.screen)
 
-            if self.selectionRect.width > 0 and self.selectionRect.height > 0:
-                pygame.draw.rect(self.screen,(0xff,0xff,0x00),self.selectionRect,3)
-
             if viewhelp:
                 self.screen.blit(self.helptext,self.helptextRect.topleft)
 
             pygame.display.flip()
 
-             
 def main():
     g = DeckOfCards()
     g.mainLoop()
