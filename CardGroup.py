@@ -8,7 +8,7 @@ class CardGroup:
         self.cards = cards
 
     def shuffle(self):
-	
+
         rectbuf = []
         for c in self.cards:
             rectbuf.append(pygame.Rect(c.rect))

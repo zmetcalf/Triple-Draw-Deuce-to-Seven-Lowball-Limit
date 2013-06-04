@@ -16,7 +16,7 @@ class Button:
         surface.blit(self.buttonImage, (self.x, self.y))
         surface.blit(self.textImage, (self.x + 30, self.y + 15))
         
-    def pressed(self, x, y):
+    def pressed(self, x, y): # TODO Change to Collide point - see CardGroup
         if self.x < x and self.x + 100 > x and self.y < y and self.y + 50 > y:
             return True
     

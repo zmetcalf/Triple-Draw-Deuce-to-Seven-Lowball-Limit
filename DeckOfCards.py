@@ -11,8 +11,6 @@
 
 #popsingle can go - only applicable to solitare games.
 
-# must find dropCard
-
 import os, pygame, math, sys # added sys to make it work better w/win & mac quit functions
 from pygame.locals import * # Imports all the constants
 import random
@@ -20,12 +18,17 @@ import random
 from CardImages import CardImages
 from CardGroup import CardGroup
 from Card import Card
-from Button import Button
+from ButtonGroup import ButtonGroup
 
 class DeckOfCards:
 
-    def dealHands(self):
-        self.mode = self.INITIAL_DEAL # says this is the initial deal
+    INITIAL_DEAL = 1
+    FIRST_DRAW = 2
+    SECOND_DRAW= 3
+    THIRD_DRAW = 4
+    END_OF_HAND = 5
+    
+    def dealHands(self): 
         #dealerDeck = self.cardGroup # initializes cardGroup object dealer deck
         self.cardGroup.collectAll(15,15) # puts cards face down on deal deck
         self.cardGroup.shuffle() # shuffle's cards
@@ -69,16 +72,37 @@ class DeckOfCards:
             #self.cardGroup.dropCard(c)
             #cards+=1
             x+=12
-    
-    def advancePlay(self):
-        self.mode +=1
-    
-#----Constants for hand phase-----------------  
-    END_OF_HAND = 0
-    INITIAL_DEAL = 1
-    FIRST_DRAW = 2
-    SECOND_DRAW= 3
-    THIRD_DRAW = 4
+
+    def drawCards(self):
+        x = 1
+
+    def redeal(self):
+        self.selectionCards = [] # clears selection cards from list
+        self.burnDeck = []
+        self.northDeck = []
+        self.southDeck = []
+        self.cardGroup.collectAll(30,30) # moves cards to 'talon'
+        self.cardGroup.shuffle() 
+
+    def advanceStreet(self):
+        
+        if self.mode == self.INITIAL_DEAL:
+            self.dealHands()
+            # self.buttonGroup[0].changeName("Check") # Does not work with button group
+        elif self.mode == self.FIRST_DRAW:
+            self.drawCards()
+        elif self.mode == self.SECOND_DRAW:
+            self.drawCards()
+        elif self.mode == self.THIRD_DRAW:
+            self.drawCards()
+        elif self.mode == self.END_OF_HAND:
+            self.redeal()
+            self.dealHands()
+            self.mode = 0
+        self.mode += 1
+        
+    def handleBets(self):
+        x = 1
 
 #----KEEP HISTORY FOR POSSIBLE HAND ANALYSIS---
 #----History Constant a list-------------------
@@ -177,12 +201,11 @@ class DeckOfCards:
         self.cardGroup = CardGroup(cards) # creates cardGroup object from card list
         self.cardGroup.shuffle() # uses shuffle function on cardGroup
          
-      
         self.burnDeck = []
         self.northDeck = []
         self.southDeck = []
                 
-        self.mode = self.END_OF_HAND # sets game at    
+        self.mode = self.INITIAL_DEAL
                         
 #-------------------Prints menu on screen--------------------
         self.helptext = pygame.Surface((380,420),1).convert()
@@ -204,12 +227,9 @@ class DeckOfCards:
         sr = self.screen.get_rect()
         self.helptextRect.centerx = sr.centerx #autocenter help on screen
         self.helptextRect.centery = sr.centery #autocenter help on screen       
-#---------------------Test Button---------------------------------
-        self.dealButton = Button("Deal", 400, 400)
 
+        self.buttonGroup = ButtonGroup()
 
-#-----------------------------------------------------------------
-                         
         lctrlDown = False
         rctrlDown = False
         lshiftDown = False
@@ -236,6 +256,7 @@ class DeckOfCards:
                             pygame.quit(); sys.exit(); # used this instead of return
                             # return # uses return to break infinite loop               
                         viewhelp=False # press any key and screen goes away
+                        self.advanceStreet()
                         continue # continue restarts loop so it does not execute any keystroke                                                 
                     if event.key == K_ESCAPE:
                         pygame.quit(); sys.exit(); # used this instead of return
@@ -298,16 +319,14 @@ class DeckOfCards:
                                 tempY = self.selectedCard.rect.y
                                 self.selectedCard.rect.y = tempY - 20
                                 self.selectionCards.append(self.selectedCard)
-                        if self.dealButton.pressed(event.pos[0], event.pos[1]):
-                            self.dealHands()
-                            self.dealButton.changeName("Draw")
+                        if self.buttonGroup.pressed(event.pos[0], event.pos[1]):
+                            self.advanceStreet()
                             
             # DRAWING - Code good for now.           
             self.screen.fill((0x00, 0xb0, 0x00))
 
             self.cardGroup.draw(self.screen)
-            self.dealButton.draw(self.screen)
-
+            self.buttonGroup.draw(self.screen)
             if viewhelp:
                 self.screen.blit(self.helptext,self.helptextRect.topleft)
 
