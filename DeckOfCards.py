@@ -319,10 +319,12 @@ class DeckOfCards:
                                 tempY = self.selectedCard.rect.y
                                 self.selectedCard.rect.y = tempY - 20
                                 self.selectionCards.append(self.selectedCard)
-                        if self.buttonGroup.pressed(event.pos[0], event.pos[1]):
-                            self.advanceStreet()
+                        self.buttonReturn = self.buttonGroup.pressed(
+                                            event.pos[0], event.pos[1])
+                        if self.buttonReturn:
+                            print self.buttonReturn # To send info to Bet Handler
                             
-            # DRAWING - Code good for now.           
+            # DRAWING - Code good for now.
             self.screen.fill((0x00, 0xb0, 0x00))
 
             self.cardGroup.draw(self.screen)
@@ -336,6 +338,5 @@ def main():
     g = DeckOfCards()
     g.mainLoop()
 
- 
 #this calls the 'main' function when this script is executed
 if __name__ == '__main__': main()

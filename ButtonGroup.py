@@ -8,9 +8,10 @@ class ButtonGroup:
         
     def pressed(self, x, y):
         for i in range(3):
-            if self.buttons[i].rect.collidepoint(x, y):
+            if self.buttons[i].pressed(x, y):
                 print "Successful"
-                continue
+                return "A Button"
+        return False
     
     def draw(self,surface):
         for c in self.buttons:
