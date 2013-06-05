@@ -2,7 +2,7 @@
     Original Source Code from http://arainyday.se/projects/python/DeckOfCards/
     Card graphics are GPL and made by John K. Estell.
     Source code are GPL and made by John Eriksson.
-    Source code modifications from Solitare to 2-7 Triple Draw Lowball 
+    Source code modifications from Solitare to 2-7 Triple Draw Lowball
         are GPL and made by Zach Metcalf
 """
 #/usr/bin/env python
@@ -15,10 +15,10 @@ import os, pygame, math, sys # added sys to make it work better w/win & mac quit
 from pygame.locals import * # Imports all the constants
 import random
 
+from ButtonGroup import ButtonGroup
 from CardImages import CardImages
 from CardGroup import CardGroup
 from Card import Card
-from ButtonGroup import ButtonGroup
 
 class DeckOfCards:
 
@@ -28,6 +28,14 @@ class DeckOfCards:
     THIRD_DRAW = 4
     END_OF_HAND = 5
     
+    def handleBet(self, action):
+        if action == "RAISE":
+            x = 0
+        elif action == "CHECK":
+            x = 0
+        elif action == "FOLD":
+            x = 0
+
     def dealHands(self): 
         #dealerDeck = self.cardGroup # initializes cardGroup object dealer deck
         self.cardGroup.collectAll(15,15) # puts cards face down on deal deck
@@ -85,7 +93,6 @@ class DeckOfCards:
         self.cardGroup.shuffle() 
 
     def advanceStreet(self):
-        
         if self.mode == self.INITIAL_DEAL:
             self.dealHands()
             # self.buttonGroup[0].changeName("Check") # Does not work with button group
@@ -100,9 +107,6 @@ class DeckOfCards:
             self.dealHands()
             self.mode = 0
         self.mode += 1
-        
-    def handleBets(self):
-        x = 1
 
 #----KEEP HISTORY FOR POSSIBLE HAND ANALYSIS---
 #----History Constant a list-------------------
@@ -145,8 +149,6 @@ class DeckOfCards:
     
         hi = self.history.pop()
         
-        #print "Popping: %s" % hi[4]
-        
         cards = hi[0]
         
         i = 0
@@ -175,8 +177,7 @@ class DeckOfCards:
         "-----------------------",
         "press any key to continue"]
 #---------------------------------------------------------
-        
-# start of game 
+
     def mainLoop(self):    
         pygame.init() # required for pygame
 
@@ -204,6 +205,8 @@ class DeckOfCards:
         self.burnDeck = []
         self.northDeck = []
         self.southDeck = []
+        
+        self.raiseCount = 0
                 
         self.mode = self.INITIAL_DEAL
                         
