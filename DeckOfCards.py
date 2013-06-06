@@ -19,6 +19,7 @@ from ButtonGroup import ButtonGroup
 from CardImages import CardImages
 from CardGroup import CardGroup
 from Card import Card
+from GameHandler import GameHandler
 
 class DeckOfCards:
 
@@ -27,14 +28,6 @@ class DeckOfCards:
     SECOND_DRAW= 3
     THIRD_DRAW = 4
     END_OF_HAND = 5
-    
-    def handleBet(self, action):
-        if action == "RAISE":
-            x = 0
-        elif action == "CHECK":
-            x = 0
-        elif action == "FOLD":
-            x = 0
 
     def dealHands(self): 
         #dealerDeck = self.cardGroup # initializes cardGroup object dealer deck
@@ -92,15 +85,17 @@ class DeckOfCards:
         self.cardGroup.collectAll(30,30) # moves cards to 'talon'
         self.cardGroup.shuffle() 
 
+    def manageAction(self, action):
+        if action == 'CAP':
+            x = 1;
+        if action == 'DRAW':
+            advanceStreet()
+
     def advanceStreet(self):
         if self.mode == self.INITIAL_DEAL:
             self.dealHands()
             # self.buttonGroup[0].changeName("Check") # Does not work with button group
-        elif self.mode == self.FIRST_DRAW:
-            self.drawCards()
-        elif self.mode == self.SECOND_DRAW:
-            self.drawCards()
-        elif self.mode == self.THIRD_DRAW:
+        elif self.mode >= self.FIRST_DRAW and <= self.THIRD_DRAW:
             self.drawCards()
         elif self.mode == self.END_OF_HAND:
             self.redeal()
@@ -205,8 +200,8 @@ class DeckOfCards:
         self.burnDeck = []
         self.northDeck = []
         self.southDeck = []
-        
-        self.raiseCount = 0
+
+        self.gameHandler = GameHandler()
                 
         self.mode = self.INITIAL_DEAL
                         
@@ -325,7 +320,7 @@ class DeckOfCards:
                         self.buttonReturn = self.buttonGroup.pressed(
                                             event.pos[0], event.pos[1])
                         if self.buttonReturn:
-                            print self.buttonReturn # To send info to Bet Handler
+                            self.manageAction(self.gameHandler.setAction(self.buttonReturn))
                             
             # DRAWING - Code good for now.
             self.screen.fill((0x00, 0xb0, 0x00))
