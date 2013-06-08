@@ -95,7 +95,7 @@ class DeckOfCards:
         if self.mode == self.INITIAL_DEAL:
             self.dealHands()
             # self.buttonGroup[0].changeName("Check") # Does not work with button group
-        elif self.mode >= self.FIRST_DRAW and <= self.THIRD_DRAW:
+        elif self.mode >= self.FIRST_DRAW and self.mode <= self.THIRD_DRAW:
             self.drawCards()
         elif self.mode == self.END_OF_HAND:
             self.redeal()
@@ -309,7 +309,7 @@ class DeckOfCards:
                     if event.button == 1:
                         self.selectedCard = self.cardGroup.getOneCard(
                             event.pos[0],event.pos[1]) # code to select a card
-                        if self.selectedCard != None:
+                        if self.selectedCard:
                             if  any(self.selectedCard == val for val in
                                 self.selectionCards) == False and any(
                                 self.selectedCard == val for val in
@@ -321,6 +321,8 @@ class DeckOfCards:
                                             event.pos[0], event.pos[1])
                         if self.buttonReturn:
                             self.manageAction(self.gameHandler.setAction(self.buttonReturn))
+                            print self.buttonReturn
+                            self.buttonGroup.hideButton(self.buttonReturn)
                             
             # DRAWING - Code good for now.
             self.screen.fill((0x00, 0xb0, 0x00))
