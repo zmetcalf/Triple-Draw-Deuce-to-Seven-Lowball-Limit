@@ -201,7 +201,7 @@ class DeckOfCards:
         self.northDeck = []
         self.southDeck = []
 
-        self.gameHandler = GameHandler()
+        self.gameHandler = GameHandler(1, 1000)
                 
         self.mode = self.INITIAL_DEAL
                         
@@ -320,7 +320,7 @@ class DeckOfCards:
                         self.buttonReturn = self.buttonGroup.pressed(
                                             event.pos[0], event.pos[1])
                         if self.buttonReturn:
-                            self.manageAction(self.gameHandler.setAction(self.buttonReturn))
+                            self.manageAction(self.gameHandler.setAction(self.buttonReturn, "NORTH"))
                             print self.buttonReturn
                             self.buttonGroup.hideButton(self.buttonReturn)
                             

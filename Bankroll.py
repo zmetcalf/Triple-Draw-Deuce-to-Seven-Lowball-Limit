@@ -8,3 +8,6 @@ class Bankroll:
         
     def decrementRoll(self, amount):
         self.bankroll -= amount
+        
+    def getBankroll(self):
+        return self.bankroll
