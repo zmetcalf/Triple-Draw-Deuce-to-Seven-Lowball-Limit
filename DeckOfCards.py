@@ -320,7 +320,7 @@ class DeckOfCards:
                         self.buttonReturn = self.buttonGroup.pressed(
                                             event.pos[0], event.pos[1])
                         if self.buttonReturn:
-                            self.manageAction(self.gameHandler.setAction(self.buttonReturn, "NORTH"))
+                            self.manageAction(self.gameHandler.setAction(self.buttonReturn, 0))
                             print self.buttonReturn
                             self.buttonGroup.hideButton(self.buttonReturn)
                             
