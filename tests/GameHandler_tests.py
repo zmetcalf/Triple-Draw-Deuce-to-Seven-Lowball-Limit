@@ -9,5 +9,11 @@ class TestInit(unittest.TestCase):
     def test_opponents(self):
         self.assertEqual(self.gameHandler.opponents, 8)
         
+class TestHeadsUp(unittest.TestCase):
+    
+    def setUp(self):
+        self.gameHandler = GameHandler(1, 1000)
+        
+        
 if __name__ == '__main__':
     unittest.main()
