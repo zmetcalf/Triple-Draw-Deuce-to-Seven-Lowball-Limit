@@ -201,7 +201,7 @@ class DeckOfCards:
         self.northDeck = []
         self.southDeck = []
 
-        self.gameHandler = GameHandler(2, 1000)
+        self.gameHandler = GameHandler(2, 1000, False)
                 
         self.mode = self.INITIAL_DEAL
                         

@@ -4,21 +4,22 @@ import random
 
 class GameHandler:
     
-    def __init__(self, numberOfPlayers, bankroll):
+    def __init__(self, numberOfPlayers, bankroll, isTest):
         self.raiseCount = 0
 
         self.players = [] 
         for i in range(0, numberOfPlayers):
             self.players.append(Player(bankroll)) 
-
+        self.activePlayers = numberOfPlayers
         self.opponents = numberOfPlayers - 1
+        self.isTest = isTest
+        self.pointer = 0
         self.initDealer()
         self.betLevel = 10
         self.pot = 0
         self.activeCheck = False
-        self.pointer = 0
         self.isInitialRound = True
-        self.activePlayers = numberOfPlayers
+        
         
     def setAction(self, action, player):
         if self.players[player].getActiveStatus():
@@ -57,12 +58,15 @@ class GameHandler:
             return False
         
     def initDealer(self):
-        x = random.randint(0, self.opponents)
+        if self.isTest:
+            x = 0
+        else:
+            x = random.randint(0, self.opponents)
         self.players[x].setDealer()
         self.pointer = x
         if self.opponents > 1:
             self.advancePointer()
-    
+        
     def setDealer(self):
         x = 0
         
@@ -93,7 +97,7 @@ class GameHandler:
                 
     def advancePointer(self):
         if self.pointer == self.opponents:
-            self.pointer == 0
+            self.pointer = 0
         else:
             self.pointer += 1
         return self.pointer
