@@ -6,6 +6,7 @@ class Player:
         self.isDealer = False
         self.inHand = True
         self.isSB = False
+        self.isBB = False
         
     def getDealerStatus(self):
         return self.isDealer
@@ -18,6 +19,9 @@ class Player:
         
     def getIsSB(self):
         return self.isSB
+    
+    def getIsBB(self):
+        return self.isBB
         
     def setActive(self):
         self.isActive = True
@@ -36,6 +40,9 @@ class Player:
         
     def setIsSB(self):
         self.isSB = True
+        
+    def setIsBB(self):
+        self.isBB = True
         
     def collectPot(self, amount):
         self.bankroll += amount

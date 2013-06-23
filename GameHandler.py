@@ -17,10 +17,12 @@ class GameHandler:
         self.pot = 0
         self.activeCheck = False
         self.pointer = 0
+        self.isInitialRound = True
+        self.activePlayers = numberOfPlayers
         
     def setAction(self, action, player):
         if self.players[player].getActiveStatus():
-            if self.players[player].getIsSB(): 
+            if self.players[player].getIsSB() and self.isInitialRound: 
                 if action == "CheckDraw":
                     self.raiseCount = 1
                     self.activeCheck = True
@@ -28,6 +30,11 @@ class GameHandler:
                     self.raiseCount = 2
                 elif action == "Fold":
                     self.resetAction()
+            elif self.players[player].getIsBB() and self.isInitialRound:
+                if action == "CheckDraw":
+                    self.setForDraw()
+                elif action == "BetRaise":
+                    self.raiseCount = 2
             elif self.raiseCount < 4:
                 if action == "CheckDraw": 
                     if self.activeCheck:
@@ -38,6 +45,9 @@ class GameHandler:
                         self.changeActionPlayer()
                 elif action == "BetRaise":
                     self.raiseCount += 1
+                elif action == "Fold":
+                    self.activePlayers -= 1
+                    self.nextActive()
             elif self.raiseCount == 4:
                 if action == "CheckDraw":
                     x = 1
@@ -69,8 +79,13 @@ class GameHandler:
         
     def changeActionPlayer(self):
         self.players[self.pointer].setInactive()
-        self.players[self.advancePointer()].setActive()
-    
+        for i in range(0, self.activePlayers):
+            self.advancePointer()
+            if self.players[self.pointer].getInHand():
+                self.players[self.pointer].setActive()
+                return True
+        return False
+        
     def postBlinds(self):
         self.players[self.pointer].bet(self.betLevel / 2)
         self.players[self.advancePointer()].bet(self.betLevel)
