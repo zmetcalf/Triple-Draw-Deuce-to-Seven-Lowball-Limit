@@ -15,7 +15,7 @@ class TestHeadsUp(unittest.TestCase):
         self.gameHandler = GameHandler(2, 1000, True)
         
     def testDealer(self):
-        self.assertEqual(self.gameHandler.players[0].getDealerStatus(), True)
+        self.assertTrue(self.gameHandler.players[0].getDealerStatus())
         
     def testPointerAfterBlinds(self):
         self.gameHandler.postBlinds()
@@ -24,12 +24,12 @@ class TestHeadsUp(unittest.TestCase):
         
     def testActiveStatusAfterBlinds(self):
         self.gameHandler.postBlinds()
-        self.assertEqual(self.gameHandler.players[0].getActiveStatus(), True)
+        self.assertTrue(self.gameHandler.players[0].getActiveStatus())
         
     def testChangeActionPlayer(self):
         self.gameHandler.postBlinds()
         self.gameHandler.changeActionPlayer()
-        self.assertEqual(self.gameHandler.players[1].getActiveStatus(), True)
+        self.assertTrue(self.gameHandler.players[1].getActiveStatus())
         
 class TestRingGame(unittest.TestCase):
     
@@ -37,7 +37,7 @@ class TestRingGame(unittest.TestCase):
         self.gameHandler = GameHandler(8, 1000, True)
         
     def testDealer(self):
-        self.assertEqual(self.gameHandler.players[0].getDealerStatus(), True)
+        self.assertTrue(self.gameHandler.players[0].getDealerStatus())
         
     def testPointer(self):
         self.assertEqual(self.gameHandler.pointer, 1)
@@ -49,12 +49,12 @@ class TestRingGame(unittest.TestCase):
     
     def testActiveStatusAfterBlinds(self):
         self.gameHandler.postBlinds()
-        self.assertEqual(self.gameHandler.players[3].getActiveStatus(), True)
+        self.assertTrue(self.gameHandler.players[3].getActiveStatus())
         
     def testChangeActionPlayer(self):
         self.gameHandler.postBlinds()
         self.gameHandler.changeActionPlayer()
-        self.assertEqual(self.gameHandler.players[4].getActiveStatus(), True)
+        self.assertTrue(self.gameHandler.players[4].getActiveStatus())
         
 if __name__ == '__main__':
     unittest.main()
