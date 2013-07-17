@@ -13,23 +13,32 @@ class TestHeadsUp(unittest.TestCase):
     
     def setUp(self):
         self.gameHandler = GameHandler(2, 1000, True)
+        self.gameHandler.postBlinds()
         
     def testDealer(self):
         self.assertTrue(self.gameHandler.players[0].getDealerStatus())
         
     def testPointerAfterBlinds(self):
-        self.gameHandler.postBlinds()
         self.gameHandler.advancePointer()
         self.assertEqual(self.gameHandler.pointer, 1)
         
     def testActiveStatusAfterBlinds(self):
-        self.gameHandler.postBlinds()
         self.assertTrue(self.gameHandler.players[0].getActiveStatus())
         
     def testChangeActionPlayer(self):
-        self.gameHandler.postBlinds()
         self.gameHandler.changeActionPlayer()
         self.assertTrue(self.gameHandler.players[1].getActiveStatus())
+        
+    def test_SB_intialbet(self):
+        self.assertEqual(self.gameHandler.raiseCount, 0)
+        self.assertEqual(self.gameHandler.players[0].getBankroll(), 995)
+        self.gameHandler.setAction("CheckDraw", 0)
+        self.assertTrue(self.gameHandler.players[1].getActiveStatus())
+        self.assertEqual(self.gameHandler.players[1].getBankroll(), 990)
+        self.assertEqual(self.gameHandler.players[0].getBankroll(), 990)
+        
+    def test_raise_everything(self):
+        x = True
         
 class TestRingGame(unittest.TestCase):
     
@@ -55,6 +64,16 @@ class TestRingGame(unittest.TestCase):
         self.gameHandler.postBlinds()
         self.gameHandler.changeActionPlayer()
         self.assertTrue(self.gameHandler.players[4].getActiveStatus())
+        
+class TestFunctions(unittest.TestCase):
+    
+    def setUp(self):
+        self.gameHandler = GameHandler(2, 1000, True)
+        
+    def test_bet(self):
+        self.gameHandler.postBlinds()
+        self.gameHandler.bet(100)
+        self.assertEqual(self.gameHandler.players[0].getBankroll(), 895)
         
 if __name__ == '__main__':
     unittest.main()

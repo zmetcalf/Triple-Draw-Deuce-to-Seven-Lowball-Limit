@@ -23,19 +23,12 @@ class GameHandler:
         
     def setAction(self, action, player):
         if self.players[player].getActiveStatus():
-            if self.players[player].getIsSB() and self.isInitialRound: 
-                if action == "CheckDraw":
-                    self.raiseCount = 1
-                    self.activeCheck = True
-                elif action == "BetRaise":
-                    self.raiseCount = 2
-                elif action == "Fold":
-                    self.resetAction()
-            elif self.players[player].getIsBB() and self.isInitialRound:
-                if action == "CheckDraw":
-                    self.setForDraw()
-                elif action == "BetRaise":
-                    self.raiseCount = 2
+            if self.opponents == 1 and self.isInitialRound:
+                return self.headsUp1stSt(action, player)
+            elif self.opponents > 1 and self.isInitialRound:
+                return self.multiHand1stSt(action, player)
+            
+            
             elif self.raiseCount < 4:
                 if action == "CheckDraw": 
                     if self.activeCheck:
@@ -106,6 +99,7 @@ class GameHandler:
         for i in self.players:
             if i.getActiveStatus():
                 i.bet(bet)
+        self.pot += bet
     
     def resetAction(self):
         self.pot = 0
@@ -114,7 +108,7 @@ class GameHandler:
     
     def setForDraw(self):
         self.activeCheck = False
-        
+        self.isInitialRound = False
         x = 0
         
         for i in self.players:
@@ -123,5 +117,53 @@ class GameHandler:
                 break
         
         self.pointer = x
-        
         self.players[self.advancePointer()].setActive()
+        
+    def headsUp1stSt(self, action, player):
+        if self.raiseCount == 0:
+            if action == "CheckDraw": # Call
+                self.raiseCount = 1
+                self.bet(self.betLevel / 2)
+                self.activeCheck = True
+            elif action == "BetRaise": # Raise
+                self.raiseCount = 2
+                self.bet(self.betLevel * 1.5)
+                self.activeCheck = False
+            elif action == "Fold":
+                self.resetAction()
+        elif self.players[player].getIsBB() and False: # Needs fixed
+                if action == "CheckDraw":
+                    self.setForDraw()
+                    return "Draw"
+                elif action == "BetRaise":
+                    self.bet(self.betLevel)
+                    self.raiseCount = 2
+                    self.activeCheck = False
+        elif 4 > self.raiseCount > 1:
+            if action == "CheckDraw" and self.activeCheck == False:
+                self.bet(self.betLevel)
+                self.activeCheck = True
+            elif action == "CheckDraw" and self.activeCheck == True:
+                self.activeCheck == False
+                self.setForDraw()
+                return "Draw"
+            elif action == "BetRaise":
+                self.bet(self.betLevel * 2)
+                self.activeCheck = False
+                self.raiseCount += 1
+            elif action == "Fold":
+                self.resetAction()
+        elif self.raiseCount == 4:
+            if action == "CheckDraw":
+                self.bet(self.betLevel)
+                self.setForDraw()
+                return "Draw"
+            elif action == "Fold":
+                self.resetAction()
+            
+        if action != "Fold":
+            self.changeActionPlayer()
+             
+        
+    def multiHand1stSt(self, action):
+        return False
