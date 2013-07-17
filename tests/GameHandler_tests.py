@@ -28,17 +28,36 @@ class TestHeadsUp(unittest.TestCase):
     def testChangeActionPlayer(self):
         self.gameHandler.changeActionPlayer()
         self.assertTrue(self.gameHandler.players[1].getActiveStatus())
-        
-    def test_SB_intialbet(self):
+    
+    def test_raise_count(self):
         self.assertEqual(self.gameHandler.raiseCount, 0)
+        
+    def test_SB_bankroll(self):
         self.assertEqual(self.gameHandler.players[0].getBankroll(), 995)
+        
+    def test_SB_intialbet_CheckDraw(self):
         self.gameHandler.setAction("CheckDraw", 0)
         self.assertTrue(self.gameHandler.players[1].getActiveStatus())
         self.assertEqual(self.gameHandler.players[1].getBankroll(), 990)
         self.assertEqual(self.gameHandler.players[0].getBankroll(), 990)
-        
+    
+    def test_BB_initialbet_raise(self):
+        self.gameHandler.setAction("CheckDraw", 0)
+        self.assertTrue(self.gameHandler.activeCheck)
+        self.assertEqual(self.gameHandler.raiseCount, 1)
+        self.assertTrue(self.gameHandler.players[1].getIsBB())
+        self.gameHandler.setAction("BetRaise", 1)
+        self.assertTrue(self.gameHandler.players[0].getActiveStatus())
+        self.assertEqual(self.gameHandler.players[0].getBankroll(), 990)
+        self.assertEqual(self.gameHandler.players[1].getBankroll(), 980)
+    
     def test_raise_everything(self):
-        x = True
+        self.gameHandler.setAction("BetRaise", 0)
+        self.gameHandler.setAction("BetRaise", 1)
+        self.gameHandler.setAction("BetRaise", 0)
+        self.gameHandler.setAction("CheckDraw", 1)
+        self.assertEqual(self.gameHandler.players[0].getBankroll()
+                            and self.gameHandler.players[1].getBankroll(), 960)
         
 class TestRingGame(unittest.TestCase):
     
