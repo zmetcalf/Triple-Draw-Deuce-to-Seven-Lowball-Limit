@@ -6,7 +6,7 @@ class GameHandler:
     
     def __init__(self, numberOfPlayers, bankroll, isTest):
         self.raiseCount = 0
-
+        self.street = 1
         self.players = [] 
         for i in range(0, numberOfPlayers):
             self.players.append(Player(bankroll)) 
@@ -85,7 +85,9 @@ class GameHandler:
         
     def postBlinds(self):
         self.players[self.pointer].bet(self.betLevel / 2)
+        self.players[self.pointer].setIsSB()
         self.players[self.advancePointer()].bet(self.betLevel)
+        self.players[self.pointer].setIsBB()
         self.players[self.advancePointer()].setActive()
                 
     def advancePointer(self):
@@ -113,11 +115,11 @@ class GameHandler:
         
         for i in self.players:
             if i.getDealerStatus():
-                x = i.index()
                 break
-        
+            x += 1
         self.pointer = x
         self.players[self.advancePointer()].setActive()
+        self.street += 1
         
     def headsUp1stSt(self, action, player):
         if self.raiseCount == 0:
@@ -131,13 +133,17 @@ class GameHandler:
                 self.activeCheck = False
             elif action == "Fold":
                 self.resetAction()
-        elif self.players[player].getIsBB() and False: # Needs fixed
+        elif self.players[player].getIsBB() and ((self.raiseCount == 1 and 
+            self.activeCheck == True) or (self.raiseCount == 2 and 
+            self.activeCheck == False)):
                 if action == "CheckDraw":
                     self.setForDraw()
                     return "Draw"
                 elif action == "BetRaise":
                     self.bet(self.betLevel)
-                    self.raiseCount = 2
+                    if self.raiseCount == 2:
+                        self.bet(self.betLevel)
+                    self.raiseCount += 1
                     self.activeCheck = False
         elif 4 > self.raiseCount > 1:
             if action == "CheckDraw" and self.activeCheck == False:
@@ -163,7 +169,34 @@ class GameHandler:
             
         if action != "Fold":
             self.changeActionPlayer()
-             
         
-    def multiHand1stSt(self, action):
+    def headsUpRemainingStreets(self, action, player):
+        if self.raiseCount < 4:
+            if action == "CheckDraw" and self.activeCheck == False:
+                self.bet(self.betLevel)
+                self.activeCheck = True
+            elif action == "CheckDraw" and self.activeCheck == True:
+                self.activeCheck == False
+                self.setForDraw()
+                return "Draw"
+            elif action == "BetRaise" and self.activeCheck == False:
+                self.bet(self.betLevel * 2)
+                self.activeCheck = False
+                self.raiseCount += 1
+            elif action == "BetRaise" and self.activeCheck == True:
+                self.bet(self.betLevel)
+                self.activeCheck = False
+                self.raiseCount += 1
+            elif action == "Fold":
+                self.resetAction()
+        else:
+            if action == "CheckDraw":
+                self.bet(self.betLevel)
+                self.setForDraw()
+                return "Draw"
+            elif action == "Fold":
+                self.resetAction()
+        
+                
+    def multiHand1stSt(self, action, player):
         return False
