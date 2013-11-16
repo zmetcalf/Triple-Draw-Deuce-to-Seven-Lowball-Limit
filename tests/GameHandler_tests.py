@@ -1,4 +1,8 @@
+import sys
 import unittest
+
+sys.path.append('../../Triple-Draw-Deuce-to-Seven-Lowball-Limit')
+
 from triple_draw_poker.GameHandler import GameHandler
 
 class TestInit(unittest.TestCase):
