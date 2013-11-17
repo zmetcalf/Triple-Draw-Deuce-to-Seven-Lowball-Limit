@@ -1,15 +1,15 @@
-from Player import Player
+from triple_draw_poker.model.Player import Player
 
 import random
 
 class GameHandler:
-    
+
     def __init__(self, numberOfPlayers, bankroll, isTest):
         self.raiseCount = 0
         self.street = 1
-        self.players = [] 
+        self.players = []
         for i in range(0, numberOfPlayers):
-            self.players.append(Player(bankroll)) 
+            self.players.append(Player(bankroll))
         self.activePlayers = numberOfPlayers
         self.opponents = numberOfPlayers - 1
         self.isTest = isTest
@@ -19,18 +19,18 @@ class GameHandler:
         self.pot = 0
         self.activeCheck = False
         self.isInitialRound = True
-        
-        
+
+
     def setAction(self, action, player):
         if self.players[player].getActiveStatus():
             if self.opponents == 1 and self.isInitialRound:
                 return self.headsUp1stSt(action, player)
             elif self.opponents > 1 and self.isInitialRound:
                 return self.multiHand1stSt(action, player)
-            
-            
+
+
             elif self.raiseCount < 4:
-                if action == "CheckDraw": 
+                if action == "CheckDraw":
                     if self.activeCheck:
                         self.setForDraw()
                         return "Draw"
@@ -49,7 +49,7 @@ class GameHandler:
                     self.resetAction()
         else:
             return False
-        
+
     def initDealer(self):
         if self.isTest:
             x = 0
@@ -59,21 +59,21 @@ class GameHandler:
         self.pointer = x
         if self.opponents > 1:
             self.advancePointer()
-        
+
     def setDealer(self):
         x = 0
-        
+
         for i in self.players:
             if i.getDealerStatus():
                 x = i.index()
                 break
-        
+
         self.players[x].setNonDealer()
         self.pointer = x
         self.players[self.advancePointer()].setDealer()
         if self.opponents > 1:
             self.advancePointer()
-        
+
     def changeActionPlayer(self):
         self.players[self.pointer].setInactive()
         for i in range(0, self.activePlayers):
@@ -82,37 +82,37 @@ class GameHandler:
                 self.players[self.pointer].setActive()
                 return True
         return False
-        
+
     def postBlinds(self):
         self.players[self.pointer].bet(self.betLevel / 2)
         self.players[self.pointer].setIsSB()
         self.players[self.advancePointer()].bet(self.betLevel)
         self.players[self.pointer].setIsBB()
         self.players[self.advancePointer()].setActive()
-                
+
     def advancePointer(self):
         if self.pointer == self.opponents:
             self.pointer = 0
         else:
             self.pointer += 1
         return self.pointer
-        
+
     def bet(self, bet):
         for i in self.players:
             if i.getActiveStatus():
                 i.bet(bet)
         self.pot += bet
-    
+
     def resetAction(self):
         self.pot = 0
         self.setDealer()
         self.postBlinds()
-    
+
     def setForDraw(self):
         self.activeCheck = False
         self.isInitialRound = False
         x = 0
-        
+
         for i in self.players:
             if i.getDealerStatus():
                 break
@@ -120,7 +120,7 @@ class GameHandler:
         self.pointer = x
         self.players[self.advancePointer()].setActive()
         self.street += 1
-        
+
     def headsUp1stSt(self, action, player):
         if self.raiseCount == 0:
             if action == "CheckDraw": # Call
@@ -133,8 +133,8 @@ class GameHandler:
                 self.activeCheck = False
             elif action == "Fold":
                 self.resetAction()
-        elif self.players[player].getIsBB() and ((self.raiseCount == 1 and 
-            self.activeCheck == True) or (self.raiseCount == 2 and 
+        elif self.players[player].getIsBB() and ((self.raiseCount == 1 and
+            self.activeCheck == True) or (self.raiseCount == 2 and
             self.activeCheck == False)):
                 if action == "CheckDraw":
                     self.setForDraw()
@@ -166,10 +166,10 @@ class GameHandler:
                 return "Draw"
             elif action == "Fold":
                 self.resetAction()
-            
+
         if action != "Fold":
             self.changeActionPlayer()
-        
+
     def headsUpRemainingStreets(self, action, player):
         if self.raiseCount < 4:
             if action == "CheckDraw" and self.activeCheck == False:
@@ -196,7 +196,7 @@ class GameHandler:
                 return "Draw"
             elif action == "Fold":
                 self.resetAction()
-        
-                
+
+
     def multiHand1stSt(self, action, player):
         return False
