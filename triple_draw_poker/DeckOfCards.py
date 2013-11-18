@@ -15,11 +15,11 @@ import os, pygame, math, sys # added sys to make it work better w/win & mac quit
 from pygame.locals import * # Imports all the constants
 import random
 
-from triple_draw_poker.view.ButtonGroup import ButtonGroup
-from triple_draw_poker.view.CardImages import CardImages
-from triple_draw_poker.view.CardGroup import CardGroup
-from triple_draw_poker.view.Card import Card
-from triple_draw_poker.controller.GameHandler import GameHandler
+from controller.GameController import GameController
+from view.ButtonGroup import ButtonGroup
+from view.CardImages import CardImages
+from view.CardGroup import CardGroup
+from view.Card import Card
 
 class DeckOfCards:
 
@@ -201,7 +201,7 @@ class DeckOfCards:
         self.northDeck = []
         self.southDeck = []
 
-        self.gameHandler = GameHandler(2, 1000, False)
+        self.gameController = GameController(2, 1000, False)
 
         self.mode = self.INITIAL_DEAL
 
@@ -320,7 +320,7 @@ class DeckOfCards:
                         self.buttonReturn = self.buttonGroup.pressed(
                                             event.pos[0], event.pos[1])
                         if self.buttonReturn:
-                            self.manageAction(self.gameHandler.setAction(self.buttonReturn, 0))
+                            self.manageAction(self.gameController.setAction(self.buttonReturn, 0))
                             print self.buttonReturn
                             self.buttonGroup.hideButton(self.buttonReturn)
 

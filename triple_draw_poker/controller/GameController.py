@@ -1,8 +1,8 @@
-from triple_draw_poker.model.Player import Player
+from model.Player import Player
 
 import random
 
-class GameHandler:
+class GameController:
 
     def __init__(self, numberOfPlayers, bankroll, isTest):
         self.raiseCount = 0
@@ -197,6 +197,30 @@ class GameHandler:
             elif action == "Fold":
                 self.resetAction()
 
+    def getButtons():
+        # Returns buttons user may use
+        return False
 
-    def multiHand1stSt(self, action, player):
+    def getTableInfo():
+        # Returns dealer button, active player, BR, pot
+        return False
+
+    def getPlayer():
+        # Returns player details
+        return False
+
+    def fold():
+        # Handles fold input from user
+        return False
+
+    def check():
+        # Handles check input from user
+        return False
+
+    def call():
+        # Handles call input from user
+        return False
+
+    def raiseBet():
+        # Handels raise input from user
         return False
