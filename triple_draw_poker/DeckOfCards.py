@@ -12,8 +12,9 @@
 #popsingle can go - only applicable to solitare games.
 
 import os, pygame, math, sys # added sys to make it work better w/win & mac quit functions
-from pygame.locals import * # Imports all the constants
 import random
+
+from pygame.locals import * # Imports all the constants
 
 from controller.GameController import GameController
 from view.ButtonGroup import ButtonGroup
@@ -201,7 +202,7 @@ class DeckOfCards:
         self.northDeck = []
         self.southDeck = []
 
-        self.gameController = GameController(2, 1000, False)
+        self.gameController = GameController()
 
         self.mode = self.INITIAL_DEAL
 
@@ -320,7 +321,6 @@ class DeckOfCards:
                         self.buttonReturn = self.buttonGroup.pressed(
                                             event.pos[0], event.pos[1])
                         if self.buttonReturn:
-                            self.manageAction(self.gameController.setAction(self.buttonReturn, 0))
                             print self.buttonReturn
                             self.buttonGroup.hideButton(self.buttonReturn)
 
