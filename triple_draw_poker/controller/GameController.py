@@ -1,8 +1,9 @@
-import random
-
-from model.Player import Player
+from triple_draw_poker.model.HandDetails import HandDetails
 
 class GameController:
+
+    def __init__(self):
+        self.hand_details = HandDetails()
 
     def getButtons():
         # Returns buttons user may use
