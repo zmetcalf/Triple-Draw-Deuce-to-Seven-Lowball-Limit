@@ -1,9 +1,11 @@
+from triple_draw_poker.model.GameDetails import GameDetails
 from triple_draw_poker.model.HandDetails import HandDetails
 
 class GameController:
 
     def __init__(self):
-        self.hand_details = HandDetails()
+        self.game_details = GameDetails()
+        self.hand_details = HandDetails(self.game_details)
 
     def getButtons():
         # Returns buttons user may use
