@@ -6,7 +6,7 @@ class GameController:
 
     def __init__(self):
         self.game_details = GameDetails()
-        self.hand_details = HandDetails(self.game_details)
+        self.hand_details = HandDetails()
 
     def getButtons(self):
         return getButtons(self.game_details, self.hand_details)

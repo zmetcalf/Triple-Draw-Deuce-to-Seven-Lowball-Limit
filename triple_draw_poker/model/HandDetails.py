@@ -1,12 +1,13 @@
-from triple_draw_poker.model.GameDetails import GameDetails
 from triple_draw_poker.model.Pot import Pot
 
 class HandDetails:
 
-    def __init__(self, GameDetails):
-        self.game_details = GameDetails
+    def __init__(self):
         self.pot = Pot()
-        self.raised = False
+        self.raised = 0
 
     def getPot(self):
         return self.pot.getPot()
+
+    def getRaised(self):
+        return self.raised

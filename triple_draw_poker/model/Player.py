@@ -1,8 +1,9 @@
 class Player:
 
-    def __init__(self, initialRoll):
+    def __init__(self, bankroll):
         self.is_player_view = False
-        self.bankroll = initialRoll
+        self.bankroll = bankroll
+        self.bet_this_hand = 0.0
         self.is_active = False
         self.is_dealer = False
         self.in_hand = True
@@ -46,16 +47,19 @@ class Player:
         self.in_hand = False
 
     def setIsSB(self):
+        self.bet_this_hand = 0.5
         self.is_SB = True
 
     def setIsBB(self):
+        self.bet_this_hand = 1
         self.is_BB = True
 
     def collectPot(self, amount):
         self.bankroll += amount
 
-    def bet(self, amount):
+    def bet(self, amount, raises):
         self.bankroll -= amount
+        self.bet_this_hand += (1 + raises)
 
     def getBankroll(self):
         return self.bankroll
