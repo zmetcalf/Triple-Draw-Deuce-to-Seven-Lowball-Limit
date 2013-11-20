@@ -1,6 +1,6 @@
 import random
 
-from triple_draw_poker.model.Players import Players
+from triple_draw_poker.model.Player import Player
 
 class GameDetails:
 
@@ -20,5 +20,5 @@ class GameDetails:
         return self.number_of_players
 
     def initDealer(self):
-        x = random.randint(0, self.player - 1)
+        x = random.randint(0, len(self.players) - 1)
         self.players[x].setDealer()

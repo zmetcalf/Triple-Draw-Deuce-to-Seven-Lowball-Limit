@@ -1,3 +1,4 @@
+from triple_draw_poker.controller.ButtonController import getButtons
 from triple_draw_poker.model.GameDetails import GameDetails
 from triple_draw_poker.model.HandDetails import HandDetails
 
@@ -7,9 +8,8 @@ class GameController:
         self.game_details = GameDetails()
         self.hand_details = HandDetails(self.game_details)
 
-    def getButtons():
-        # Returns buttons user may use
-        return False
+    def getButtons(self):
+        return getButtons(self.game_details, self.hand_details)
 
     def getTableInfo():
         # Returns dealer button, active player, BR, pot

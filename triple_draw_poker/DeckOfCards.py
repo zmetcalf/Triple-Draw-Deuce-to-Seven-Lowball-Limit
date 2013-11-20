@@ -14,13 +14,15 @@
 import os, pygame, math, sys # added sys to make it work better w/win & mac quit functions
 import random
 
+sys.path.append('../../Triple-Draw-Deuce-to-Seven-Lowball-Limit')
+
 from pygame.locals import * # Imports all the constants
 
 from controller.GameController import GameController
-from view.ButtonGroup import ButtonGroup
-from view.CardImages import CardImages
-from view.CardGroup import CardGroup
-from view.Card import Card
+from triple_draw_poker.view.ButtonGroup import ButtonGroup
+from triple_draw_poker.view.CardImages import CardImages
+from triple_draw_poker.view.CardGroup import CardGroup
+from triple_draw_poker.view.Card import Card
 
 class DeckOfCards:
 
