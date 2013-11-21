@@ -16,6 +16,12 @@ class GameDetails:
         self.initDealer()
         self.bet_level = 10
 
+    def getActivePlayer(self):
+        for player in self.getPlayers():
+            if player.getActiveStatus():
+                return player
+        return False
+
     def getBetLevel(self):
         return self.bet_level
 
@@ -34,3 +40,6 @@ class GameDetails:
 
     def getPlayers(self):
         return self.players
+
+    def playerBet(self, amount, raises):
+        return self.getActivePlayer().bet(amount, raises)

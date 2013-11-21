@@ -16,6 +16,9 @@ class Player:
     def getDealerStatus(self):
         return self.is_dealer
 
+    def getBetThisHand(self):
+        return self.bet_this_hand
+
     def getActiveStatus(self):
         return self.is_active
 
