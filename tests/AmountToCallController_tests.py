@@ -7,7 +7,7 @@ from triple_draw_poker.controller.AmountToCallController import getAmountToCall
 from triple_draw_poker.model.GameDetails import GameDetails
 from triple_draw_poker.model.HandDetails import HandDetails
 
-class TestAmountToCallController(unittest.TestCase):
+class AmountToCallControllerTests(unittest.TestCase):
     def setUp(self):
         self.game_details = GameDetails()
         self.hand_details = HandDetails()

@@ -5,7 +5,7 @@ sys.path.append('../../Triple-Draw-Deuce-to-Seven-Lowball-Limit')
 
 from triple_draw_poker.model.Pot import Pot
 
-class TestMethods(unittest.TestCase):
+class PotTests(unittest.TestCase):
     def setUp(self):
         self.pot = Pot()
 

@@ -7,7 +7,7 @@ from triple_draw_poker.controller.ButtonController import getButtons
 from triple_draw_poker.model.GameDetails import GameDetails
 from triple_draw_poker.model.HandDetails import HandDetails
 
-class TestButtonController(unittest.TestCase):
+class ButtonControllerTests(unittest.TestCase):
     def setUp(self):
         game_details = GameDetails()
         hand_details = HandDetails()

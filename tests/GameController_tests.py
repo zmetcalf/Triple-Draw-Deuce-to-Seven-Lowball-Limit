@@ -5,7 +5,7 @@ sys.path.append('../../Triple-Draw-Deuce-to-Seven-Lowball-Limit')
 
 from triple_draw_poker.controller.GameController import GameController
 
-class TestInit(unittest.TestCase):
+class GameControllerTests(unittest.TestCase):
 
     def setUp(self):
         self.game_controller = GameController()

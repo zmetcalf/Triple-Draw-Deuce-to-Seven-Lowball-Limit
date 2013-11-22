@@ -5,7 +5,7 @@ sys.path.append('../../Triple-Draw-Deuce-to-Seven-Lowball-Limit')
 
 from triple_draw_poker.model.GameDetails import GameDetails
 
-class TestClass(unittest.TestCase):
+class GameDetailsTests(unittest.TestCase):
     def setUp(self):
         self.gameDetails = GameDetails()
 

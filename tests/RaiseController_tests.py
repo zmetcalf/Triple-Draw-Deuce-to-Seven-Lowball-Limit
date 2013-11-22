@@ -7,7 +7,7 @@ from triple_draw_poker.controller.RaiseController import raiseBet
 from triple_draw_poker.model.GameDetails import GameDetails
 from triple_draw_poker.model.HandDetails import HandDetails
 
-class TestRaiseController(unittest.TestCase):
+class RaiseControllerTests(unittest.TestCase):
     def setUp(self):
         self.game_details = GameDetails()
         self.hand_details = HandDetails()
