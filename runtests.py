@@ -15,10 +15,13 @@ def suite():
     # Controller Tests
 
     suite.addTest(AmountToCallControllerTests('testRaisedPot'))
+
     suite.addTest(ButtonControllerTests('testUnraised'))
     suite.addTest(ButtonControllerTests('testRaised'))
     suite.addTest(ButtonControllerTests('testCapped'))
+
     suite.addTest(GameControllerTests('testHandDetails'))
+
     suite.addTest(RaiseControllerTests('testRaisePot'))
 
     # Model Tests
@@ -31,8 +34,6 @@ def suite():
     suite.addTest(PotTests('testGetPot'))
     suite.addTest(PotTests('testAddBet'))
     suite.addTest(PotTests('testScoop'))
-
-
 
     return suite
 

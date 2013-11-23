@@ -27,7 +27,8 @@ class ButtonControllerTests(unittest.TestCase):
 
     def testCapped(self):
         test_list = [True, False, True, False, False]
-        [raiseBet(self.game_details, self.hand_details) for _ in range(4)]
+        for _ in range(4):
+            raiseBet(self.game_details, self.hand_details)
         self.assertEqual(getButtons(self.game_details, self.hand_details),
                                     test_list)
 

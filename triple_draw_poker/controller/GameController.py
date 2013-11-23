@@ -1,4 +1,6 @@
 from triple_draw_poker.controller.ButtonController import getButtons
+from triple_draw_poker.controller.InitController import initHand
+from triple_draw_poker.controller.RaiseController import raiseBet
 from triple_draw_poker.model.GameDetails import GameDetails
 from triple_draw_poker.model.HandDetails import HandDetails
 
@@ -7,6 +9,10 @@ class GameController:
     def __init__(self):
         self.game_details = GameDetails()
         self.hand_details = HandDetails()
+
+    def setUp(self, GameDetails, HandDetails, bankroll, players, bet_level):
+        # Receives data from user screen
+        initHand(self.game_details, self.hand_details)
 
     def getButtons(self):
         return getButtons(self.game_details, self.hand_details)
@@ -32,5 +38,8 @@ class GameController:
         return False
 
     def raiseBet():
-        # Handels raise input from user
+        return raiseBet(self.game_details, self.hand_details)
+
+    def showdown():
+        # This may go into call()
         return False
