@@ -1,4 +1,4 @@
-# Game details contains items that last longer than one hand.
+# Game details contain items that last longer than one hand.
 # This includes the players and initial settings
 
 import random
@@ -40,6 +40,12 @@ class GameDetails:
 
     def getPlayers(self):
         return self.players
+
+    def setActivePlayer(self, player_position):
+        self.players[player_position].setActive()
+
+    def setInactivePlayer(self, player_position):
+        self.players[player_position].setInactive()
 
     def playerBet(self, amount, raises):
         return self.getActivePlayer().bet(amount, raises)
