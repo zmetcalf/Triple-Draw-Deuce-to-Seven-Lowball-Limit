@@ -10,7 +10,7 @@ class GameController:
         self.game_details = GameDetails()
         self.hand_details = HandDetails()
 
-    def setUp(self, GameDetails, HandDetails, bankroll, players, bet_level):
+    def setupHand(self, GameDetails, HandDetails):
         # Receives data from user screen
         initHand(self.game_details, self.hand_details)
 
