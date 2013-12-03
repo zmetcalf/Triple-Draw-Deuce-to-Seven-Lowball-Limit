@@ -17,7 +17,7 @@ class GameDetails:
         self.bet_level = 10
 
     def getActivePlayer(self):
-        for player in self.getPlayers():
+        for player in self.players:
             if player.getActiveStatus():
                 return player
         return False
@@ -31,6 +31,28 @@ class GameDetails:
     def initDealer(self):
         x = random.randint(0, len(self.players) - 1)
         self.players[x].setDealer()
+
+    def checkIfDealerSet(self):
+        for player in self.players:
+            if player.getDealerStatus():
+                return True
+        return False
+
+    def advanceDealer(self):
+        dealer_index = self.players.index(self.getDealer())
+        if dealer_index == len(self.players) - 1:
+            # TODO needs additional functionality to check if player is in hand
+            self.players[0].setDealer()
+        else:
+            self.players[dealer_index + 1].setDealer()
+
+        self.players[dealer_index].setNonDealer()
+
+    def getDealer(self):
+        for player in self.players:
+            if player.getDealerStatus():
+                return player
+        return False
 
     def setPlayerViewStatus(self, player_position):
         self.players[player_position].setPlayerViewStatus()
@@ -46,6 +68,10 @@ class GameDetails:
 
     def setInactivePlayer(self, player_position):
         self.players[player_position].setInactive()
+
+    def setInactiveAllPlayers(self):
+        for player in self.players:
+            player.setInactive()
 
     def playerBet(self, amount, raises):
         return self.getActivePlayer().bet(amount, raises)

@@ -10,7 +10,6 @@ from triple_draw_poker.model.HandDetails import HandDetails
 class InitControllerTests(unittest.TestCase):
     def setUp(self):
         self.gameDetails = GameDetails()
-        self.handDetails = HandDetails()
 
     def testHeadsUpInit(self):
         return False

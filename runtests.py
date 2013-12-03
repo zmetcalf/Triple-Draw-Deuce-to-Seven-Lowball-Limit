@@ -31,6 +31,8 @@ def suite():
 
     suite.addTest(GameDetailsTests('testGetBetLevel'))
     suite.addTest(GameDetailsTests('testGetNumberOfPlayers'))
+    suite.addTest(GameDetailsTests('testAdvanceDealerSimple'))
+    suite.addTest(GameDetailsTests('testAdvanceDealerRoundTheBend'))
 
     suite.addTest(HandDetailsTests('testGetPot'))
 

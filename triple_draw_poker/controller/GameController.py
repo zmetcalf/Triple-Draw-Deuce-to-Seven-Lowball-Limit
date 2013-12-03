@@ -8,11 +8,9 @@ class GameController:
 
     def __init__(self):
         self.game_details = GameDetails()
-        self.hand_details = HandDetails()
 
-    def setupHand(self, GameDetails, HandDetails):
-        # Receives data from user screen
-        initHand(self.game_details, self.hand_details)
+    def setupHand(self):
+        self.hand_details = initHand(self.game_details)
 
     def getButtons(self):
         return getButtons(self.game_details, self.hand_details)
