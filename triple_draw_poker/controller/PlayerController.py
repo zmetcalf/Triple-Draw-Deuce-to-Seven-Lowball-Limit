@@ -34,3 +34,7 @@ def getDealer(players):
 
 def playerBet(players, amount, raises):
     return getActivePlayer(players).bet(amount, raises)
+
+def setInactiveAllPlayers(players):
+    for player in players:
+        player.setInactive()

@@ -36,7 +36,7 @@ class GameController:
         return False
 
     def raiseBet():
-        return raiseBet(self.game_details, self.hand_details)
+        raiseBet(self.game_details, self.hand_details)
 
     def showdown():
         # This may go into call()

@@ -35,10 +35,3 @@ class GameDetails:
 
     def setInactivePlayer(self, player_position):
         self.players[player_position].setInactive()
-
-    def setInactiveAllPlayers(self):
-        for player in self.players:
-            player.setInactive()
-
-    def playerBet(self, amount, raises):
-        return self.getActivePlayer().bet(amount, raises)
