@@ -4,6 +4,7 @@ from tests.AmountToCallController_tests import AmountToCallControllerTests
 from tests.ButtonController_tests import ButtonControllerTests
 from tests.GameController_tests import GameControllerTests
 from tests.InitController_tests import InitControllerTests
+from tests.PlayerController_tests import PlayerControllerTests
 from tests.RaiseController_tests import RaiseControllerTests
 
 from tests.GameDetails_tests import GameDetailsTests
@@ -25,14 +26,15 @@ def suite():
 
     suite.addTest(InitControllerTests('testHeadsUpInit'))
 
+    suite.addTest(PlayerControllerTests('testAdvanceDealerSimple'))
+    suite.addTest(PlayerControllerTests('testAdvanceDealerRoundTheBend'))
+
     suite.addTest(RaiseControllerTests('testRaisePot'))
 
     # Model Tests
 
     suite.addTest(GameDetailsTests('testGetBetLevel'))
     suite.addTest(GameDetailsTests('testGetNumberOfPlayers'))
-    suite.addTest(GameDetailsTests('testAdvanceDealerSimple'))
-    suite.addTest(GameDetailsTests('testAdvanceDealerRoundTheBend'))
 
     suite.addTest(HandDetailsTests('testGetPot'))
 

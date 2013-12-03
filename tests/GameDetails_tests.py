@@ -7,27 +7,13 @@ from triple_draw_poker.model.GameDetails import GameDetails
 
 class GameDetailsTests(unittest.TestCase):
     def setUp(self):
-        self.gameDetails = GameDetails()
+        self.game_details = GameDetails()
 
     def testGetBetLevel(self):
-        self.assertEqual(self.gameDetails.getBetLevel(), 10)
+        self.assertEqual(self.game_details.getBetLevel(), 10)
 
     def testGetNumberOfPlayers(self):
-        self.assertEqual(self.gameDetails.getNumberOfPlayers(), 2)
-
-    def testAdvanceDealerSimple(self):
-        self.gameDetails.players[0].setDealer()
-        self.gameDetails.players[1].setNonDealer()
-        self.gameDetails.advanceDealer()
-        self.assertFalse(self.gameDetails.players[0].getDealerStatus())
-        self.assertTrue(self.gameDetails.players[1].getDealerStatus())
-
-    def testAdvanceDealerRoundTheBend(self):
-        self.gameDetails.players[0].setNonDealer()
-        self.gameDetails.players[1].setDealer()
-        self.gameDetails.advanceDealer()
-        self.assertFalse(self.gameDetails.players[1].getDealerStatus())
-        self.assertTrue(self.gameDetails.players[0].getDealerStatus())
+        self.assertEqual(self.game_details.getNumberOfPlayers(), 2)
 
 if __name__ == '__main__':
     unittest.main()
