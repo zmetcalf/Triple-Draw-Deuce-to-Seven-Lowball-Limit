@@ -45,3 +45,20 @@ def setRaiser(players):
             player.setRaiser()
         else:
             player.setNonRaiser()
+
+def changeActivePlayer(players):
+    pointer = active_index =  players.index(getActivePlayer(players))
+    players[pointer].setInactive()
+    while pointer < len(players) - 1:
+        pointer += 1
+        if players[pointer].getInHand():
+            players[pointer].setActive()
+            return
+
+    pointer = 0
+
+    while pointer < active_index:
+        if players[pointer].getInHand():
+            players[pointer].setActive()
+            return
+        pointer += 1

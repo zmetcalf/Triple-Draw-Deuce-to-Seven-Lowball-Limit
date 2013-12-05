@@ -1,6 +1,7 @@
 import unittest
 
 from tests.AmountToCallController_tests import AmountToCallControllerTests
+from tests.BlindController_tests import BlindControllerTests
 from tests.ButtonController_tests import ButtonControllerTests
 from tests.GameController_tests import GameControllerTests
 from tests.InitController_tests import InitControllerTests
@@ -18,6 +19,8 @@ def suite():
 
     suite.addTest(AmountToCallControllerTests('testRaisedPot'))
 
+    suite.addTest(BlindControllerTests('testPostBlinds'))
+
     suite.addTest(ButtonControllerTests('testUnraised'))
     suite.addTest(ButtonControllerTests('testRaised'))
     suite.addTest(ButtonControllerTests('testCapped'))
@@ -29,6 +32,8 @@ def suite():
     suite.addTest(PlayerControllerTests('testAdvanceDealerSimple'))
     suite.addTest(PlayerControllerTests('testAdvanceDealerRoundTheBend'))
     suite.addTest(PlayerControllerTests('testSetRaiser'))
+    suite.addTest(PlayerControllerTests('testChangeActivePlayerSimple'))
+    suite.addTest(PlayerControllerTests('testChangeActivePlayerRoundTheBend'))
 
     suite.addTest(RaiseControllerTests('testRaisePot'))
 
