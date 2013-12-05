@@ -5,6 +5,7 @@ class Player:
         self.bankroll = bankroll
         self.bet_this_street = 0.0
         self.is_active = False
+        self.is_raiser = False
         self.is_dealer = False
         self.in_hand = True
         self.is_SB = False
@@ -21,6 +22,9 @@ class Player:
 
     def getActiveStatus(self):
         return self.is_active
+
+    def getRaiserStatus(self):
+        return self.is_raiser
 
     def getInHand(self):
         return self.in_hand
@@ -45,6 +49,12 @@ class Player:
 
     def setNonDealer(self):
         self.is_dealer = False
+
+    def setRaiser(self):
+        self.is_raiser = True
+
+    def setNonRaiser(self):
+        self.is_raiser = False
 
     def setOutOfHand(self):
         self.in_hand = False

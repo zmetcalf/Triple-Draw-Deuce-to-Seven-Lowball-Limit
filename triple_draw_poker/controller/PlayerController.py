@@ -38,3 +38,10 @@ def playerBet(players, amount, raises):
 def setInactiveAllPlayers(players):
     for player in players:
         player.setInactive()
+
+def setRaiser(players):
+    for player in players:
+        if player.getActiveStatus():
+            player.setRaiser()
+        else:
+            player.setNonRaiser()

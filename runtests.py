@@ -28,6 +28,7 @@ def suite():
 
     suite.addTest(PlayerControllerTests('testAdvanceDealerSimple'))
     suite.addTest(PlayerControllerTests('testAdvanceDealerRoundTheBend'))
+    suite.addTest(PlayerControllerTests('testSetRaiser'))
 
     suite.addTest(RaiseControllerTests('testRaisePot'))
 
