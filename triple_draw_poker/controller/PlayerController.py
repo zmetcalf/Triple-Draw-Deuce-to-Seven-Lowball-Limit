@@ -17,14 +17,22 @@ def checkIfDealerSet(players):
     return False
 
 def advanceDealer(players):
-    dealer_index = players.index(getDealer(players))
-    if dealer_index == len(players) - 1:
-        # TODO needs additional functionality to check if player is in hand
-        players[0].setDealer()
-    else:
-        players[dealer_index + 1].setDealer()
-
+    pointer = dealer_index = players.index(getDealer(players))
     players[dealer_index].setNonDealer()
+
+    while pointer < len(players) - 1:
+        pointer += 1
+        if not players[pointer].getSittingOut():
+            players[pointer].setDealer()
+            return
+
+    pointer = 0
+
+    while pointer < dealer_index:
+        if not players[pointer].getSittingOut():
+            players[pointer].setDealer()
+            return
+        pointer += 1
 
 def getDealer(players):
     for player in players:

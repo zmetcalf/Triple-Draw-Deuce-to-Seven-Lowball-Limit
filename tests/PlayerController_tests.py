@@ -13,18 +13,23 @@ class PlayerControllerTests(unittest.TestCase):
         self.game_details = GameDetails()
 
     def testAdvanceDealerSimple(self):
-        self.game_details.players[0].setDealer()
-        self.game_details.players[1].setNonDealer()
-        advanceDealer(self.game_details.getPlayers())
-        self.assertFalse(self.game_details.players[0].getDealerStatus())
-        self.assertTrue(self.game_details.players[1].getDealerStatus())
+        players = [Player(1), Player(1), Player(1), Player(1)]
+        players[2].setDealer()
+        advanceDealer(players)
+        self.assertFalse(players[0].getDealerStatus())
+        self.assertFalse(players[1].getDealerStatus())
+        self.assertFalse(players[2].getDealerStatus())
+        self.assertTrue(players[3].getDealerStatus())
 
     def testAdvanceDealerRoundTheBend(self):
-        self.game_details.players[0].setNonDealer()
-        self.game_details.players[1].setDealer()
-        advanceDealer(self.game_details.getPlayers())
-        self.assertFalse(self.game_details.players[1].getDealerStatus())
-        self.assertTrue(self.game_details.players[0].getDealerStatus())
+        players = [Player(1), Player(1), Player(1), Player(1)]
+        players[2].setDealer()
+        players[3].sitOut()
+        advanceDealer(players)
+        self.assertTrue(players[0].getDealerStatus())
+        self.assertFalse(players[1].getDealerStatus())
+        self.assertFalse(players[2].getDealerStatus())
+        self.assertFalse(players[3].getDealerStatus())
 
     def testSetRaiser(self):
         self.game_details.players[0].setActive()
