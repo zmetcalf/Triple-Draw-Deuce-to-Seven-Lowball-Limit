@@ -9,6 +9,7 @@ def getActivePlayer(players):
 def initDealer(players):
     x = random.randint(0, len(players) - 1)
     players[x].setDealer()
+    players[x].setActive()
 
 def checkIfDealerSet(players):
     for player in players:
@@ -24,6 +25,7 @@ def advanceDealer(players):
         pointer += 1
         if not players[pointer].getSittingOut():
             players[pointer].setDealer()
+            players[pointer].setActive()
             return
 
     pointer = 0
@@ -31,6 +33,7 @@ def advanceDealer(players):
     while pointer < dealer_index:
         if not players[pointer].getSittingOut():
             players[pointer].setDealer()
+            players[pointer].setActive()
             return
         pointer += 1
 

@@ -1,4 +1,5 @@
 from triple_draw_poker.controller.AmountToCallController import getAmountToCall
+from triple_draw_poker.controller.BlindController import postBlinds
 from triple_draw_poker.controller.PlayerController import checkIfDealerSet, \
       initDealer, advanceDealer, setInactiveAllPlayers
 
@@ -12,4 +13,5 @@ def initHand(GameDetails):
         initDealer(GameDetails.getPlayers())
     else:
         advanceDealer(GameDetails.getPlayers())
+    postBlinds(GameDetails)
     return hand_details
