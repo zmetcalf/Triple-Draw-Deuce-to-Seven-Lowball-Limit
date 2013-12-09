@@ -9,6 +9,7 @@ def raiseBet(GameDetails, HandDetails):
     amount_to_call = getAmountToCall(GameDetails, HandDetails)
     HandDetails.incrementRaised()
     setRaiser(GameDetails.getPlayers())
-    playerBet(GameDetails.getPlayers(), HandDetails.getStreetPremium() *
+    playerBet(HandDetails, GameDetails.getPlayers(),
+                          HandDetails.getStreetPremium() *
                           GameDetails.getBetLevel() * (amount_to_call + 1),
                           amount_to_call + 1)

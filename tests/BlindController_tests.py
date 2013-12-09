@@ -11,8 +11,27 @@ from triple_draw_poker.model.Player import Player
 class BlindControllerTests(unittest.TestCase):
     def setUp(self):
         self.gameDetails = GameDetails()
+        self.handDetails = HandDetails()
 
     def testPostBlinds(self):
-        self.gameDetails.players = [Player(1), Player(1), Player(1), Player(1)]
+        self.gameDetails.players = [Player(1000), Player(1000), Player(1000),
+                                    Player(1000)]
         self.gameDetails.setActivePlayer(0)
-        postBlinds(self.gameDetails)
+        postBlinds(self.gameDetails, self.handDetails)
+        self.assertTrue(self.handDetails.getPot().getPot(), 15)
+        self.assertTrue(self.gameDetails.players[3].getActiveStatus())
+        self.assertEqual(self.handDetails.getRaised(), 1)
+        self.assertEqual(self.gameDetails.players[1].getBankroll(), 995)
+        self.assertEqual(self.gameDetails.players[2].getBankroll(), 990)
+
+    def testPostBlindsHeadsUp(self):
+        self.gameDetails.players[0].setDealer()
+        self.gameDetails.players[1].setNonDealer()
+        self.gameDetails.setActivePlayer(0)
+        self.gameDetails.setInactivePlayer(1)
+        postBlinds(self.gameDetails, self.handDetails)
+        self.assertTrue(self.handDetails.getPot().getPot(), 15)
+        self.assertTrue(self.gameDetails.players[0].getActiveStatus())
+        self.assertEqual(self.handDetails.getRaised(), 1)
+        self.assertEqual(self.gameDetails.players[0].getBankroll(), 995)
+        self.assertEqual(self.gameDetails.players[1].getBankroll(), 990)

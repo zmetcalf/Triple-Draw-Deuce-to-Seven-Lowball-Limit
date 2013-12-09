@@ -13,5 +13,5 @@ def initHand(GameDetails):
         initDealer(GameDetails.getPlayers())
     else:
         advanceDealer(GameDetails.getPlayers())
-    postBlinds(GameDetails)
+    postBlinds(GameDetails, hand_details)
     return hand_details

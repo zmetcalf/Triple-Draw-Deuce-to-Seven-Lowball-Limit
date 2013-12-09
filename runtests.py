@@ -20,6 +20,7 @@ def suite():
     suite.addTest(AmountToCallControllerTests('testRaisedPot'))
 
     suite.addTest(BlindControllerTests('testPostBlinds'))
+    suite.addTest(BlindControllerTests('testPostBlindsHeadsUp'))
 
     suite.addTest(ButtonControllerTests('testUnraised'))
     suite.addTest(ButtonControllerTests('testRaised'))

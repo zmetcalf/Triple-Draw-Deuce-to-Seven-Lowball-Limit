@@ -10,7 +10,7 @@ class HandDetailsTests(unittest.TestCase):
         self.hand_details = HandDetails()
 
     def testGetPot(self):
-        self.assertEqual(self.hand_details.getPot(), 0)
+        self.assertEqual(self.hand_details.getPot(), self.hand_details.pot)
 
 if __name__ == '__main__':
     unittest.main()

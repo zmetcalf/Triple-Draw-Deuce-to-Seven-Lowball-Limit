@@ -8,7 +8,7 @@ class HandDetails:
         self.street = 0
 
     def getPot(self):
-        return self.pot.getPot()
+        return self.pot
 
     def getRaised(self):
         return self.raised
@@ -20,4 +20,3 @@ class HandDetails:
 
     def incrementRaised(self):
         self.raised += 1
-

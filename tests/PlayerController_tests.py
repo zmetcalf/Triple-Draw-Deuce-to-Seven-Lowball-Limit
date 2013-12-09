@@ -33,6 +33,7 @@ class PlayerControllerTests(unittest.TestCase):
 
     def testSetRaiser(self):
         self.game_details.players[0].setActive()
+        self.game_details.players[1].setInactive()
         self.game_details.players[1].setRaiser()
         setRaiser(self.game_details.getPlayers())
         self.assertTrue(self.game_details.players[0].getRaiserStatus())
