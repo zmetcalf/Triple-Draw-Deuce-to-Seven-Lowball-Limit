@@ -3,6 +3,7 @@ import unittest
 from tests.AmountToCallController_tests import AmountToCallControllerTests
 from tests.BlindController_tests import BlindControllerTests
 from tests.ButtonController_tests import ButtonControllerTests
+from tests.FoldController_tests import FoldControllerTests
 from tests.GameController_tests import GameControllerTests
 from tests.InitController_tests import InitControllerTests
 from tests.PlayerController_tests import PlayerControllerTests
@@ -25,6 +26,8 @@ def suite():
     suite.addTest(ButtonControllerTests('testUnraised'))
     suite.addTest(ButtonControllerTests('testRaised'))
     suite.addTest(ButtonControllerTests('testCapped'))
+
+    suite.addTest(FoldControllerTests('testFold'))
 
     suite.addTest(GameControllerTests('testHandDetails'))
 
