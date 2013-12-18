@@ -76,3 +76,10 @@ def changeActivePlayer(players):
             players[pointer].setActive()
             return
         pointer += 1
+
+def getPlayersInHand(players):
+    active_players = 0
+    for player in players:
+        if player.getInHand():
+            active_players += 1
+    return active_players

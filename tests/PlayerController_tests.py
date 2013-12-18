@@ -4,7 +4,7 @@ import unittest
 sys.path.append('../../Triple-Draw-Deuce-to-Seven-Lowball-Limit')
 
 from triple_draw_poker.controller.PlayerController import advanceDealer, \
-      setRaiser, changeActivePlayer
+      setRaiser, changeActivePlayer, getPlayersInHand
 from triple_draw_poker.model.GameDetails import GameDetails
 from triple_draw_poker.model.Player import Player
 
@@ -56,6 +56,12 @@ class PlayerControllerTests(unittest.TestCase):
         self.assertFalse(players[1].getActiveStatus())
         self.assertFalse(players[2].getActiveStatus())
         self.assertFalse(players[3].getActiveStatus())
+
+    def testGetPlayersInHand(self):
+        players = [Player(1), Player(1), Player(1), Player(1)]
+        players[1].setOutOfHand()
+        players[2].setOutOfHand()
+        self.assertEqual(getPlayersInHand(players), 2)
 
 if __name__ == '__main__':
     unittest.main()

@@ -38,6 +38,7 @@ def suite():
     suite.addTest(PlayerControllerTests('testSetRaiser'))
     suite.addTest(PlayerControllerTests('testChangeActivePlayerSimple'))
     suite.addTest(PlayerControllerTests('testChangeActivePlayerRoundTheBend'))
+    suite.addTest(PlayerControllerTests('testGetPlayersInHand'))
 
     suite.addTest(RaiseControllerTests('testRaisePot'))
 
