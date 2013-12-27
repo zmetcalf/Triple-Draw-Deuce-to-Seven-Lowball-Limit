@@ -5,6 +5,7 @@ from tests.BlindController_tests import BlindControllerTests
 from tests.ButtonController_tests import ButtonControllerTests
 from tests.FoldController_tests import FoldControllerTests
 from tests.GameController_tests import GameControllerTests
+from tests.HandController_tests import HandControllerTests
 from tests.InitController_tests import InitControllerTests
 from tests.PlayerController_tests import PlayerControllerTests
 from tests.RaiseController_tests import RaiseControllerTests
@@ -30,6 +31,10 @@ def suite():
     suite.addTest(FoldControllerTests('testFold'))
 
     suite.addTest(GameControllerTests('testHandDetails'))
+
+    suite.addTest(HandControllerTests('testAdvanceHandUnraised'))
+    suite.addTest(HandControllerTests('testAdvanceHandRaisedRaiser'))
+    suite.addTest(HandControllerTests('testAdvanceHandRaisedCaller'))
 
     suite.addTest(InitControllerTests('testHeadsUpInit'))
 
