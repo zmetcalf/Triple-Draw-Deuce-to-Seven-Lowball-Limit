@@ -35,6 +35,7 @@ def suite():
     suite.addTest(HandControllerTests('testAdvanceHandUnraised'))
     suite.addTest(HandControllerTests('testAdvanceHandRaisedRaiser'))
     suite.addTest(HandControllerTests('testAdvanceHandRaisedCaller'))
+    suite.addTest(HandControllerTests('testAdvanceStreet'))
 
     suite.addTest(InitControllerTests('testHeadsUpInit'))
 

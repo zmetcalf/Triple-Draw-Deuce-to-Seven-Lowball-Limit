@@ -9,9 +9,16 @@ def advanceHand(HandDetails, GameDetails):
     if HandDetails.getRaised():
         changeActivePlayer(GameDetails.getPlayers())
         if active_player.getBetThisStreet() == HandDetails.getRaised():
-            return 'Next Street' # TODO activate next street
+            advanceStreet(HandDetails)
     else:
         if active_player.getDealerStatus():
-            return 'Next Street' # TODO activate next street
+            advanceStreet(HandDetails)
         else:
             changeActivePlayer(GameDetails.getPlayers())
+
+def advanceStreet(HandDetails):
+    if HandDetails.getStreet() < HandDetails.getNumberOfStreets() - 1:
+        HandDetails.incrementStreet()
+        # TODO Engage Draw
+    else:
+        return 'Showdown'
