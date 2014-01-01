@@ -9,44 +9,48 @@ from triple_draw_poker.model.HandDetails import HandDetails
 
 class HandControllerTests(unittest.TestCase):
     def setUp(self):
-        self.gameDetails = GameDetails()
-        self.handDetails = HandDetails()
+        self.game_details = GameDetails()
+        self.hand_details = HandDetails()
 
     def testAdvanceHandUnraised(self):
-        self.gameDetails.getPlayers()[0].setActive()
-        self.gameDetails.getPlayers()[0].setNonDealer()
-        self.gameDetails.getPlayers()[1].setInactive()
-        self.gameDetails.getPlayers()[1].setDealer()
-        advanceHand(self.handDetails, self.gameDetails)
-        self.assertFalse(self.gameDetails.getPlayers()[0].getActiveStatus())
-        self.assertTrue(self.gameDetails.getPlayers()[1].getActiveStatus())
-        advanceHand(self.handDetails, self.gameDetails)
-        self.assertEqual(self.handDetails.getStreet(), 1)
+        self.game_details.getPlayers()[0].setActive()
+        self.game_details.getPlayers()[0].setNonDealer()
+        self.game_details.getPlayers()[1].setInactive()
+        self.game_details.getPlayers()[1].setDealer()
+        advanceHand(self.hand_details, self.game_details)
+        self.assertFalse(self.game_details.getPlayers()[0].getActiveStatus())
+        self.assertTrue(self.game_details.getPlayers()[1].getActiveStatus())
+        advanceHand(self.hand_details, self.game_details)
+        self.assertEqual(self.hand_details.getStreet(), 1)
 
     def testAdvanceHandRaisedRaiser(self):
-        self.gameDetails.getPlayers()[0].setActive()
-        self.gameDetails.getPlayers()[0].bet(100, 1)
-        self.handDetails.incrementRaised()
-        advanceHand(self.handDetails, self.gameDetails)
-        self.assertFalse(self.gameDetails.getPlayers()[0].getActiveStatus())
-        self.assertTrue(self.gameDetails.getPlayers()[1].getActiveStatus())
+        self.game_details.getPlayers()[0].setActive()
+        self.game_details.getPlayers()[0].bet(100, 1)
+        self.hand_details.incrementRaised()
+        advanceHand(self.hand_details, self.game_details)
+        self.assertFalse(self.game_details.getPlayers()[0].getActiveStatus())
+        self.assertTrue(self.game_details.getPlayers()[1].getActiveStatus())
 
     def testAdvanceHandRaisedCaller(self):
-        self.gameDetails.getPlayers()[0].setActive()
-        self.gameDetails.getPlayers()[0].bet(100, 0)
-        self.handDetails.incrementRaised()
-        advanceHand(self.handDetails, self.gameDetails)
-        self.gameDetails.getPlayers()[1].bet(100, 0)
-        advanceHand(self.handDetails, self.gameDetails)
-        self.assertEqual(self.handDetails.getStreet(), 2) # TODO Fix regression - should this be one?
-        self.assertTrue(self.gameDetails.getPlayers()[0].getActiveStatus())
-        self.assertFalse(self.gameDetails.getPlayers()[1].getActiveStatus())
+        self.game_details.getPlayers()[0].setActive()
+        self.game_details.getPlayers()[1].setInactive()
+        self.game_details.getPlayers()[0].bet(100, 0)
+        self.hand_details.incrementRaised()
+        advanceHand(self.hand_details, self.game_details)
+        self.assertEqual(self.game_details.getPlayers()[1].getBetThisStreet(), 0)
+        self.assertEqual(self.hand_details.getRaised(), 1)
+        self.assertEqual(self.hand_details.getStreet(), 0)
+        self.game_details.getPlayers()[1].bet(100, 0)
+        advanceHand(self.hand_details, self.game_details)
+        self.assertEqual(self.hand_details.getStreet(), 1)
+        self.assertTrue(self.game_details.getPlayers()[0].getActiveStatus())
+        self.assertFalse(self.game_details.getPlayers()[1].getActiveStatus())
 
     def testAdvanceStreet(self):
-        advanceStreet(self.handDetails) # First Draw - Flop
-        self.assertEqual(self.handDetails.getStreet(), 1)
-        advanceStreet(self.handDetails) # Second Draw - Turn
-        self.assertEqual(self.handDetails.getStreet(), 2)
-        advanceStreet(self.handDetails) # Third Draw - River
-        self.assertEqual(self.handDetails.getStreet(), 3)
-        self.assertEqual(advanceStreet(self.handDetails), 'Showdown')
+        advanceStreet(self.hand_details, self.game_details) # First Draw - Flop
+        self.assertEqual(self.hand_details.getStreet(), 1)
+        advanceStreet(self.hand_details, self.game_details) # Second Draw - Turn
+        self.assertEqual(self.hand_details.getStreet(), 2)
+        advanceStreet(self.hand_details, self.game_details)# Third Draw - River
+        self.assertEqual(self.hand_details.getStreet(), 3)
+        self.assertTrue(advanceStreet(self.hand_details, self.game_details))

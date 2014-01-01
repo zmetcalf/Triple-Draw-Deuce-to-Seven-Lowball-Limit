@@ -7,6 +7,7 @@ class HandDetails:
         self.raised = 0
         self.street = 0
         self.number_of_streets = 4
+        self.in_draw = False
 
     def getPot(self):
         return self.pot
@@ -25,8 +26,14 @@ class HandDetails:
     def getNumberOfStreets(self):
         return self.number_of_streets
 
+    def getInDraw(self):
+        return self.in_draw
+
     def incrementRaised(self):
         self.raised += 1
 
     def incrementStreet(self):
         self.street += 1
+
+    def changeInDraw(self):
+        self.in_draw = not self.in_draw
