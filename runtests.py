@@ -7,6 +7,7 @@ from tests.FoldController_tests import FoldControllerTests
 from tests.GameController_tests import GameControllerTests
 from tests.HandController_tests import HandControllerTests
 from tests.InitController_tests import InitControllerTests
+from tests.Lowball27HandRankController_tests import Lowball27HandRankControllerTests
 from tests.PlayerController_tests import PlayerControllerTests
 from tests.RaiseController_tests import RaiseControllerTests
 
@@ -38,6 +39,10 @@ def suite():
     suite.addTest(HandControllerTests('testAdvanceStreet'))
 
     suite.addTest(InitControllerTests('testHeadsUpInit'))
+
+    suite.addTest(Lowball27HandRankControllerTests('testGetWinner'))
+    suite.addTest(Lowball27HandRankControllerTests('testCheckIfSuitedTrue'))
+    suite.addTest(Lowball27HandRankControllerTests('testCheckIfSuitedFalse'))
 
     suite.addTest(PlayerControllerTests('testAdvanceDealerSimple'))
     suite.addTest(PlayerControllerTests('testAdvanceDealerRoundTheBend'))

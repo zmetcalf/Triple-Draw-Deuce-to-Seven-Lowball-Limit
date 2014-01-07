@@ -1,13 +1,13 @@
 import os, pygame, math
 from pygame.locals import *
-                             
+
 class Card:
 
-    def __init__(self,frontImage,backImage,x=0,y=0, v=0):
+    def __init__(self, frontImage, backImage, x=0, y=0, v=0):
         self.bimg = backImage
         self.fimg = frontImage
         self.img = backImage
-        self.side = False # Changed from int to Boolean
+        self.side = False
         self.rect = self.img.get_rect()
         self.rect.x = x
         self.rect.y = y
@@ -32,25 +32,25 @@ class Card:
         self.side = True
         self.img = self.fimg
 
-    def setSide(self,side):
+    def setSide(self, side):
         if side:
             self.img = self.fimg
         else:
             self.img = self.bimg
         self.side = side
-       
-    def move(self,dx,dy):
+
+    def move(self, dx, dy):
         self.rect.x += dx
         self.rect.y += dy
         if self.child:
             self.child.move(dx,dy)
 
-    def draw(self,surface):
+    def draw(self, surface):
         surface.blit(self.img,self.rect.topleft)
-    
+
     def getSuit(self):
         suit = int(self.value / 13)
-        
+
         if suit == 0:
             return "SPADE"
         elif suit == 1:
@@ -59,10 +59,13 @@ class Card:
             return "DIAMOND"
         elif suit == 3:
             return "HEART"
-    
+
     def getRank(self):
+        return (self.value - (int(self.value / 13) * 13) + 1)
+
+    def getNamedRank(self):
         rank = (self.value - (int(self.value / 13) * 13))
-        
+
         if rank == 0:
             return "ACE"
         elif rank == 1:
