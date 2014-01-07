@@ -30,6 +30,14 @@ class Lowball27HandRankControllerTests(unittest.TestCase):
             Card('SPADE', 4)
         ]
 
+        self.wheel = [
+            Card('HEART', 13),
+            Card('CLUB', 4),
+            Card('SPADE', 5),
+            Card('SPADE', 3),
+            Card('SPADE', 2)
+        ]
+
     def testGetWinner(self):
         return True
 
@@ -38,3 +46,21 @@ class Lowball27HandRankControllerTests(unittest.TestCase):
 
     def testCheckIfSuitedFalse(self):
         self.assertEqual(checkIfSuited(self.low_2_to_7), False)
+
+    def testCheckIfOrderedTrue(self):
+        return True
+
+    def testCheckIfOrderedFalse(self):
+        return True
+
+    def testCheckIfBroadwayTrue(self):
+        return True
+
+    def testCheckIfBroadwayFalse(self):
+        return True
+
+    def testCheckIfWheelTrue(self):
+        self.assertEqual(checkIfSuited(self.wheel), True)
+
+    def testCheckIfWheelFalse(self):
+        return True

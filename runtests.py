@@ -43,6 +43,12 @@ def suite():
     suite.addTest(Lowball27HandRankControllerTests('testGetWinner'))
     suite.addTest(Lowball27HandRankControllerTests('testCheckIfSuitedTrue'))
     suite.addTest(Lowball27HandRankControllerTests('testCheckIfSuitedFalse'))
+    suite.addTest(Lowball27HandRankControllerTests('testCheckIfOrderedTrue'))
+    suite.addTest(Lowball27HandRankControllerTests('testCheckIfOrderedFalse'))
+    suite.addTest(Lowball27HandRankControllerTests('testCheckIfBroadwayTrue'))
+    suite.addTest(Lowball27HandRankControllerTests('testCheckIfBroadwayFalse'))
+    suite.addTest(Lowball27HandRankControllerTests('testCheckIfWheelTrue'))
+    suite.addTest(Lowball27HandRankControllerTests('testCheckIfWheelFalse'))
 
     suite.addTest(PlayerControllerTests('testAdvanceDealerSimple'))
     suite.addTest(PlayerControllerTests('testAdvanceDealerRoundTheBend'))

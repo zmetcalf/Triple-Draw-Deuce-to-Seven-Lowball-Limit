@@ -9,3 +9,5 @@ def checkIfSuited(card_list):
             return False
     return True
 
+def checkIfWheel(card_list):
+    return False
