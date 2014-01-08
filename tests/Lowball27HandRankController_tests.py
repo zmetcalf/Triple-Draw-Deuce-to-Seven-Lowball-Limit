@@ -6,7 +6,7 @@ sys.path.append('../../Triple-Draw-Deuce-to-Seven-Lowball-Limit')
 from tests.test_models.Card import Card
 
 from triple_draw_poker.controller.Lowball27HandRankController import getWinner, \
-      checkIfSuited
+      checkIfSuited, checkIfWheel, checkIfBroadway, checkIfStraight
 from triple_draw_poker.model.GameDetails import GameDetails
 from triple_draw_poker.model.HandDetails import HandDetails
 
@@ -22,6 +22,14 @@ class Lowball27HandRankControllerTests(unittest.TestCase):
             Card('SPADE', 10)
         ]
 
+        self.straight = [
+            Card('HEART', 7),
+            Card('CLUB', 3),
+            Card('SPADE', 5),
+            Card('DIAMOND', 6),
+            Card('SPADE', 4)
+        ]
+
         self.low_2_to_7 = [
             Card('HEART', 7),
             Card('CLUB', 2),
@@ -31,7 +39,7 @@ class Lowball27HandRankControllerTests(unittest.TestCase):
         ]
 
         self.wheel = [
-            Card('HEART', 13),
+            Card('HEART', 1),
             Card('CLUB', 4),
             Card('SPADE', 5),
             Card('SPADE', 3),
@@ -47,20 +55,22 @@ class Lowball27HandRankControllerTests(unittest.TestCase):
     def testCheckIfSuitedFalse(self):
         self.assertEqual(checkIfSuited(self.low_2_to_7), False)
 
-    def testCheckIfOrderedTrue(self):
-        return True
+    def testCheckIfStraightTrue(self):
+        self.assertEqual(checkIfStraight(self.straight), 7)
 
-    def testCheckIfOrderedFalse(self):
-        return True
+    def testCheckIfStraightFalse(self):
+        self.assertEqual(checkIfStraight(self.low_2_to_7), False)
 
     def testCheckIfBroadwayTrue(self):
-        return True
+        self.assertEqual(checkIfBroadway(self.royal_flush), 14)
+        self.assertEqual(checkIfStraight(self.royal_flush), 14)
 
     def testCheckIfBroadwayFalse(self):
-        return True
+        self.assertEqual(checkIfBroadway(self.wheel), False)
 
     def testCheckIfWheelTrue(self):
-        self.assertEqual(checkIfSuited(self.wheel), True)
+        self.assertEqual(checkIfWheel(self.wheel), 5)
+        self.assertEqual(checkIfStraight(self.wheel), 5)
 
     def testCheckIfWheelFalse(self):
-        return True
+        self.assertEqual(checkIfWheel(self.royal_flush), False)
