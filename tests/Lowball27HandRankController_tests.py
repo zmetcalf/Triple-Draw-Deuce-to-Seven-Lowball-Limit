@@ -6,7 +6,8 @@ sys.path.append('../../Triple-Draw-Deuce-to-Seven-Lowball-Limit')
 from tests.test_models.Card import Card
 
 from triple_draw_poker.controller.Lowball27HandRankController import getWinner, \
-      checkIfSuited, checkIfWheel, checkIfBroadway, checkIfStraight
+      checkIfSuited, checkIfWheel, checkIfBroadway, checkIfStraight, \
+      checkIfFourOfKind
 from triple_draw_poker.model.GameDetails import GameDetails
 from triple_draw_poker.model.HandDetails import HandDetails
 
@@ -19,6 +20,14 @@ class Lowball27HandRankControllerTests(unittest.TestCase):
             Card('SPADE', 13),
             Card('SPADE', 12),
             Card('SPADE', 11),
+            Card('SPADE', 10)
+        ]
+
+        self.four_of_kind = [
+            Card('HEART', 12),
+            Card('SPADE', 12),
+            Card('CLUB', 12),
+            Card('DIAMOND', 12),
             Card('SPADE', 10)
         ]
 
@@ -48,6 +57,12 @@ class Lowball27HandRankControllerTests(unittest.TestCase):
 
     def testGetWinner(self):
         return True
+
+    def testCheckIfFourOfKindTrue(self):
+        self.assertEqual(checkIfFourOfKind(self.four_of_kind), 12)
+
+    def testCheckIfFourOfKindFalse(self):
+        self.assertEqual(checkIfFourOfKind(self.royal_flush), False)
 
     def testCheckIfSuitedTrue(self):
         self.assertEqual(checkIfSuited(self.royal_flush), True)

@@ -41,6 +41,8 @@ def suite():
     suite.addTest(InitControllerTests('testHeadsUpInit'))
 
     suite.addTest(Lowball27HandRankControllerTests('testGetWinner'))
+    suite.addTest(Lowball27HandRankControllerTests('testCheckIfFourOfKindTrue'))
+    suite.addTest(Lowball27HandRankControllerTests('testCheckIfFourOfKindFalse'))
     suite.addTest(Lowball27HandRankControllerTests('testCheckIfSuitedTrue'))
     suite.addTest(Lowball27HandRankControllerTests('testCheckIfSuitedFalse'))
     suite.addTest(Lowball27HandRankControllerTests('testCheckIfStraightTrue'))

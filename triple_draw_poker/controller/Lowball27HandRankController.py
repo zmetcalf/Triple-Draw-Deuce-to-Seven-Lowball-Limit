@@ -2,6 +2,16 @@ def getWinner():
     # Must handle receiving differnt lengths of lists...
     return True
 
+def checkIfFourOfKind(card_list):
+    rank_list = []
+    for card in card_list:
+        rank_list.append(card.getRank())
+    if rank_list.count(rank_list[0]) == 4:
+        return rank_list[0]
+    if rank_list.count(rank_list[1]) == 4:
+        return rank_list[1]
+    return False
+
 def checkIfSuited(card_list):
     for card in card_list:
         if card_list[0].getSuit() != card.getSuit():
