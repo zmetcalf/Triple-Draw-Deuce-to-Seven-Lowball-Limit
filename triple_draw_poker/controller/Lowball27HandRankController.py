@@ -31,14 +31,18 @@ def checkIfThreeOfKind(card_list):
 def checkIfTwoPaired(card_list):
     rank_list = []
     pairs = []
+    kicker = 0
     for card in card_list:
         rank_list.append(card.getRank())
     for rank in rank_list:
         if rank_list.count(rank) == 2:
             if not pairs.count(rank):
                 pairs.append(rank)
+        else:
+            kicker = rank
     if len(pairs) == 2:
         pairs.sort()
+        pairs.append(kicker) # Kicker is last
         return pairs
     return False
 

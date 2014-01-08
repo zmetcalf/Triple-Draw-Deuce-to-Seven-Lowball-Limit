@@ -110,7 +110,7 @@ class Lowball27HandRankControllerTests(unittest.TestCase):
         self.assertEqual(checkIfThreeOfKind(self.royal_flush), False)
 
     def testCheckIfTwoPairedTrue(self):
-        self.assertEqual(checkIfTwoPaired(self.two_pair), [10, 12])
+        self.assertEqual(checkIfTwoPaired(self.two_pair), [10, 12, 3])
 
     def testCheckIfTwoPairedFalse(self):
         self.assertEqual(checkIfTwoPaired(self.one_pair), False)
