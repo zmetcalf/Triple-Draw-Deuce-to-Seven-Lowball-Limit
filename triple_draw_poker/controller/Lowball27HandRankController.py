@@ -12,6 +12,45 @@ def checkIfFourOfKind(card_list):
         return rank_list[1]
     return False
 
+def checkIfFullHouse(card_list):
+    triplet = checkIfThreeOfKind(card_list)
+    pair = checkIfPaired(card_list)
+    if not triplet or not pair:
+        return False
+    return [triplet, pair]
+
+def checkIfThreeOfKind(card_list):
+    rank_list = []
+    for card in card_list:
+        rank_list.append(card.getRank())
+    for rank in rank_list:
+        if rank_list.count(rank) == 3:
+            return rank
+    return False
+
+def checkIfTwoPaired(card_list):
+    rank_list = []
+    pairs = []
+    for card in card_list:
+        rank_list.append(card.getRank())
+    for rank in rank_list:
+        if rank_list.count(rank) == 2:
+            if not pairs.count(rank):
+                pairs.append(rank)
+    if len(pairs) == 2:
+        pairs.sort()
+        return pairs
+    return False
+
+def checkIfPaired(card_list):
+    rank_list = []
+    for card in card_list:
+        rank_list.append(card.getRank())
+    for rank in rank_list:
+        if rank_list.count(rank) == 2:
+            return rank
+    return False
+
 def checkIfSuited(card_list):
     for card in card_list:
         if card_list[0].getSuit() != card.getSuit():

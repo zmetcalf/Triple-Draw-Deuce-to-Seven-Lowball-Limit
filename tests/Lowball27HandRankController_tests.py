@@ -7,7 +7,8 @@ from tests.test_models.Card import Card
 
 from triple_draw_poker.controller.Lowball27HandRankController import getWinner, \
       checkIfSuited, checkIfWheel, checkIfBroadway, checkIfStraight, \
-      checkIfFourOfKind
+      checkIfFourOfKind, checkIfThreeOfKind, checkIfFullHouse, checkIfPaired, \
+      checkIfTwoPaired
 from triple_draw_poker.model.GameDetails import GameDetails
 from triple_draw_poker.model.HandDetails import HandDetails
 
@@ -31,12 +32,44 @@ class Lowball27HandRankControllerTests(unittest.TestCase):
             Card('SPADE', 10)
         ]
 
+        self.full_house = [
+            Card('HEART', 12),
+            Card('SPADE', 10),
+            Card('CLUB', 12),
+            Card('DIAMOND', 12),
+            Card('CLUB', 10)
+        ]
+
+        self.three_of_kind = [
+            Card('HEART', 12),
+            Card('SPADE', 13),
+            Card('CLUB', 12),
+            Card('DIAMOND', 12),
+            Card('SPADE', 10)
+        ]
+
         self.straight = [
             Card('HEART', 7),
             Card('CLUB', 3),
             Card('SPADE', 5),
             Card('DIAMOND', 6),
             Card('SPADE', 4)
+        ]
+
+        self.two_pair = [
+            Card('HEART', 12),
+            Card('SPADE', 10),
+            Card('CLUB', 12),
+            Card('DIAMOND', 3),
+            Card('CLUB', 10)
+        ]
+
+        self.one_pair = [
+            Card('HEART', 12),
+            Card('SPADE', 1),
+            Card('CLUB', 12),
+            Card('DIAMOND', 3),
+            Card('SPADE', 10)
         ]
 
         self.low_2_to_7 = [
@@ -63,6 +96,30 @@ class Lowball27HandRankControllerTests(unittest.TestCase):
 
     def testCheckIfFourOfKindFalse(self):
         self.assertEqual(checkIfFourOfKind(self.royal_flush), False)
+
+    def testCheckIfFullHouseTrue(self):
+        self.assertEqual(checkIfFullHouse(self.full_house), [12, 10])
+
+    def testCheckIfFullHouseFalse(self):
+        self.assertEqual(checkIfFullHouse(self.three_of_kind), False)
+
+    def testCheckIfThreeOfKindTrue(self):
+        self.assertEqual(checkIfThreeOfKind(self.three_of_kind), 12)
+
+    def testCheckIfThreeOfKindFalse(self):
+        self.assertEqual(checkIfThreeOfKind(self.royal_flush), False)
+
+    def testCheckIfTwoPairedTrue(self):
+        self.assertEqual(checkIfTwoPaired(self.two_pair), [10, 12])
+
+    def testCheckIfTwoPairedFalse(self):
+        self.assertEqual(checkIfTwoPaired(self.one_pair), False)
+
+    def testCheckIfPairedTrue(self):
+        self.assertEqual(checkIfPaired(self.one_pair), 12)
+
+    def testCheckIfPairedFalse(self):
+        self.assertEqual(checkIfPaired(self.three_of_kind), False)
 
     def testCheckIfSuitedTrue(self):
         self.assertEqual(checkIfSuited(self.royal_flush), True)
