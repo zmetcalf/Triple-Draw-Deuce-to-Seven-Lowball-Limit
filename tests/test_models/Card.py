@@ -15,3 +15,6 @@ class Card:
 
     def getRank(self):
         return self.rank
+
+    def setRank(self, rank): # TODO Need to refactor real class
+        self.rank = rank

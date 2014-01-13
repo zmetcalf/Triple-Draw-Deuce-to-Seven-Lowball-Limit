@@ -8,7 +8,8 @@ from tests.test_models.Card import Card
 from triple_draw_poker.controller.Lowball27HandRankController import getWinner, \
       checkIfSuited, checkIfWheel, checkIfBroadway, checkIfStraight, \
       checkIfFourOfKind, checkIfThreeOfKind, checkIfFullHouse, checkIfPaired, \
-      checkIfTwoPaired
+      checkIfTwoPaired, getAceHighList, checkIfRoyalFlush, checkIfStraightFlush, \
+      getBestHand
 from triple_draw_poker.model.GameDetails import GameDetails
 from triple_draw_poker.model.HandDetails import HandDetails
 
@@ -22,6 +23,14 @@ class Lowball27HandRankControllerTests(unittest.TestCase):
             Card('SPADE', 12),
             Card('SPADE', 11),
             Card('SPADE', 10)
+        ]
+
+        self.straight_flush = [
+            Card('SPADE', 7),
+            Card('SPADE', 9),
+            Card('SPADE', 8),
+            Card('SPADE', 5),
+            Card('SPADE', 6)
         ]
 
         self.four_of_kind = [
@@ -90,6 +99,26 @@ class Lowball27HandRankControllerTests(unittest.TestCase):
 
     def testGetWinner(self):
         return True
+
+    def testGetBestHand(self):
+        self.assertEqual(getBestHand(self.one_pair, self.low_2_to_7), 'one')
+        self.assertEqual(getBestHand(self.one_pair, self.full_house), 'two')
+
+    def testGetAceHighList(self):
+        ace_high_list = getAceHighList(self.royal_flush)
+        self.assertEqual(ace_high_list[0].getRank(), 14)
+
+    def testCheckIfRoyalFlushTrue(self):
+        self.assertEqual(checkIfRoyalFlush(self.royal_flush), True)
+
+    def testCheckIfRoyalFlushFalse(self):
+        self.assertEqual(checkIfRoyalFlush(self.straight_flush), False)
+
+    def testCheckIfStraightFlushTrue(self):
+        self.assertEqual(checkIfStraightFlush(self.straight_flush), 9)
+
+    def testCheckIfStraightFlushFalse(self):
+        self.assertEqual(checkIfStraightFlush(self.straight), False)
 
     def testCheckIfFourOfKindTrue(self):
         self.assertEqual(checkIfFourOfKind(self.four_of_kind), 12)

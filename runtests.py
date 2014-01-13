@@ -41,6 +41,12 @@ def suite():
     suite.addTest(InitControllerTests('testHeadsUpInit'))
 
     suite.addTest(Lowball27HandRankControllerTests('testGetWinner'))
+    suite.addTest(Lowball27HandRankControllerTests('testGetBestHand'))
+    suite.addTest(Lowball27HandRankControllerTests('testGetAceHighList'))
+    suite.addTest(Lowball27HandRankControllerTests('testCheckIfRoyalFlushTrue'))
+    suite.addTest(Lowball27HandRankControllerTests('testCheckIfRoyalFlushFalse'))
+    suite.addTest(Lowball27HandRankControllerTests('testCheckIfStraightFlushTrue'))
+    suite.addTest(Lowball27HandRankControllerTests('testCheckIfStraightFlushFalse'))
     suite.addTest(Lowball27HandRankControllerTests('testCheckIfFourOfKindTrue'))
     suite.addTest(Lowball27HandRankControllerTests('testCheckIfFourOfKindFalse'))
     suite.addTest(Lowball27HandRankControllerTests('testCheckIfFullHouseTrue'))
