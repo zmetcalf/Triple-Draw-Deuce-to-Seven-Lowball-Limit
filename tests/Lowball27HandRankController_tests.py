@@ -5,8 +5,8 @@ sys.path.append('../../Triple-Draw-Deuce-to-Seven-Lowball-Limit')
 
 from tests.test_models.Card import Card
 
-from triple_draw_poker.controller.Lowball27HandRankController import getWinner, \
-      checkIfSuited, checkIfWheel, checkIfBroadway, checkIfStraight, \
+from triple_draw_poker.controller.Lowball27HandRankController import getLowballWinner, \
+      checkIfFlush, checkIfWheel, checkIfBroadway, checkIfStraight, \
       checkIfFourOfKind, checkIfThreeOfKind, checkIfFullHouse, checkIfPaired, \
       checkIfTwoPaired, getAceHighList, checkIfRoyalFlush, checkIfStraightFlush, \
       getBestHand
@@ -33,11 +33,27 @@ class Lowball27HandRankControllerTests(unittest.TestCase):
             Card('SPADE', 6)
         ]
 
+        self.straight_flush_low = [
+            Card('SPADE', 1),
+            Card('SPADE', 2),
+            Card('SPADE', 4),
+            Card('SPADE', 3),
+            Card('SPADE', 5)
+        ]
+
         self.four_of_kind = [
             Card('HEART', 12),
             Card('SPADE', 12),
             Card('CLUB', 12),
             Card('DIAMOND', 12),
+            Card('SPADE', 10)
+        ]
+
+        self.four_of_kind_low = [
+            Card('HEART', 11),
+            Card('SPADE', 11),
+            Card('CLUB', 11),
+            Card('DIAMOND', 11),
             Card('SPADE', 10)
         ]
 
@@ -49,12 +65,28 @@ class Lowball27HandRankControllerTests(unittest.TestCase):
             Card('CLUB', 10)
         ]
 
-        self.three_of_kind = [
-            Card('HEART', 12),
-            Card('SPADE', 13),
+        self.full_house_low = [
+            Card('HEART', 10),
+            Card('SPADE', 10),
             Card('CLUB', 12),
             Card('DIAMOND', 12),
-            Card('SPADE', 10)
+            Card('CLUB', 10)
+        ]
+
+        self.flush = [
+            Card('SPADE', 7),
+            Card('SPADE', 10),
+            Card('SPADE', 1),
+            Card('SPADE', 5),
+            Card('SPADE', 6)
+        ]
+
+        self.flush_low = [
+            Card('CLUB', 7),
+            Card('CLUB', 9),
+            Card('CLUB', 1),
+            Card('CLUB', 5),
+            Card('CLUB', 6)
         ]
 
         self.straight = [
@@ -65,11 +97,43 @@ class Lowball27HandRankControllerTests(unittest.TestCase):
             Card('SPADE', 4)
         ]
 
+        self.three_of_kind = [
+            Card('HEART', 12),
+            Card('SPADE', 13),
+            Card('CLUB', 12),
+            Card('DIAMOND', 12),
+            Card('SPADE', 10)
+        ]
+
+        self.three_of_kind_low = [
+            Card('HEART', 10),
+            Card('SPADE', 13),
+            Card('CLUB', 10),
+            Card('DIAMOND', 12),
+            Card('SPADE', 10)
+        ]
+
         self.two_pair = [
             Card('HEART', 12),
             Card('SPADE', 10),
             Card('CLUB', 12),
             Card('DIAMOND', 3),
+            Card('CLUB', 10)
+        ]
+
+        self.two_pair_low = [
+            Card('HEART', 2),
+            Card('SPADE', 10),
+            Card('CLUB', 2),
+            Card('DIAMOND', 3),
+            Card('CLUB', 10)
+        ]
+
+        self.two_pair_low_kick = [
+            Card('HEART', 12),
+            Card('SPADE', 10),
+            Card('CLUB', 12),
+            Card('DIAMOND', 2),
             Card('CLUB', 10)
         ]
 
@@ -79,6 +143,30 @@ class Lowball27HandRankControllerTests(unittest.TestCase):
             Card('CLUB', 12),
             Card('DIAMOND', 3),
             Card('SPADE', 10)
+        ]
+
+        self.one_pair_low = [
+            Card('HEART', 12),
+            Card('SPADE', 1),
+            Card('CLUB', 10),
+            Card('DIAMOND', 3),
+            Card('SPADE', 10)
+        ]
+
+        self.one_pair_low_kick = [
+            Card('HEART', 12),
+            Card('SPADE', 1),
+            Card('CLUB', 12),
+            Card('DIAMOND', 2),
+            Card('SPADE', 10)
+        ]
+
+        self.high_card = [
+            Card('HEART', 1),
+            Card('CLUB', 2),
+            Card('SPADE', 10),
+            Card('SPADE', 3),
+            Card('SPADE', 4)
         ]
 
         self.low_2_to_7 = [
@@ -97,12 +185,26 @@ class Lowball27HandRankControllerTests(unittest.TestCase):
             Card('SPADE', 2)
         ]
 
-    def testGetWinner(self):
+    def testGetLowballWinner(self):
         return True
 
     def testGetBestHand(self):
         self.assertEqual(getBestHand(self.one_pair, self.low_2_to_7), 'one')
         self.assertEqual(getBestHand(self.one_pair, self.full_house), 'two')
+        self.assertEqual(getBestHand(self.full_house_low, self.full_house),
+                          'two')
+        self.assertEqual(getBestHand(self.straight_flush,
+                                      self.straight_flush_low), 'one')
+        self.assertEqual(getBestHand(self.flush, self.flush_low), 'one')
+        self.assertEqual(getBestHand(self.flush_low, self.flush), 'two')
+        self.assertEqual(getBestHand(self.straight, self.wheel), 'one')
+        self.assertEqual(getBestHand(self.high_card, self.low_2_to_7), 'one')
+        self.assertEqual(getBestHand(self.three_of_kind,
+                                      self.three_of_kind_low), 'one')
+        self.assertEqual(getBestHand(self.two_pair_low_kick,
+                                      self.two_pair), 'two')
+        self.assertEqual(getBestHand(self.one_pair, self.one_pair_low), 'one')
+        self.assertEqual(getBestHand(self.low_2_to_7, self.low_2_to_7), 'tie')
 
     def testGetAceHighList(self):
         ace_high_list = getAceHighList(self.royal_flush)
@@ -132,6 +234,18 @@ class Lowball27HandRankControllerTests(unittest.TestCase):
     def testCheckIfFullHouseFalse(self):
         self.assertEqual(checkIfFullHouse(self.three_of_kind), False)
 
+    def testCheckIfFlushTrue(self):
+        self.assertEqual(checkIfFlush(self.royal_flush), [14, 13, 12, 11, 10])
+
+    def testCheckIfFlushFalse(self):
+        self.assertEqual(checkIfFlush(self.low_2_to_7), False)
+
+    def testCheckIfStraightTrue(self):
+        self.assertEqual(checkIfStraight(self.straight), 7)
+
+    def testCheckIfStraightFalse(self):
+        self.assertEqual(checkIfStraight(self.low_2_to_7), False)
+
     def testCheckIfThreeOfKindTrue(self):
         self.assertEqual(checkIfThreeOfKind(self.three_of_kind), 12)
 
@@ -139,28 +253,16 @@ class Lowball27HandRankControllerTests(unittest.TestCase):
         self.assertEqual(checkIfThreeOfKind(self.royal_flush), False)
 
     def testCheckIfTwoPairedTrue(self):
-        self.assertEqual(checkIfTwoPaired(self.two_pair), [10, 12, 3])
+        self.assertEqual(checkIfTwoPaired(self.two_pair), [12, 10, 3])
 
     def testCheckIfTwoPairedFalse(self):
         self.assertEqual(checkIfTwoPaired(self.one_pair), False)
 
     def testCheckIfPairedTrue(self):
-        self.assertEqual(checkIfPaired(self.one_pair), 12)
+        self.assertEqual(checkIfPaired(self.one_pair), [12, 14, 10, 3])
 
     def testCheckIfPairedFalse(self):
         self.assertEqual(checkIfPaired(self.three_of_kind), False)
-
-    def testCheckIfSuitedTrue(self):
-        self.assertEqual(checkIfSuited(self.royal_flush), True)
-
-    def testCheckIfSuitedFalse(self):
-        self.assertEqual(checkIfSuited(self.low_2_to_7), False)
-
-    def testCheckIfStraightTrue(self):
-        self.assertEqual(checkIfStraight(self.straight), 7)
-
-    def testCheckIfStraightFalse(self):
-        self.assertEqual(checkIfStraight(self.low_2_to_7), False)
 
     def testCheckIfBroadwayTrue(self):
         self.assertEqual(checkIfBroadway(self.royal_flush), 14)
