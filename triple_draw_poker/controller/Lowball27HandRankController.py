@@ -1,6 +1,23 @@
-def getLowballWinner():
-    # Must handle receiving differnt lengths of lists...
-    return True
+from triple_draw_poker.controller.PlayerController import getActivePlayer, \
+      getPlayersInHand
+
+from triple_draw_poker.model.GameDetails import GameDetails
+
+def getLowballWinner(GameDetails):
+    # Start on Active Player or Dealer - advanceHand leaves it on Active Player
+    winners = [getActivePlayer(GameDetails.getPlayers())]
+    # TODO Trigger Show Hand Listener
+    for i in range(0, getPlayersInHand(GameDetails.getPlayers())):
+        changeActivePlayer(GameDetails.getPlayers())
+        winning_hand = getBestHand(winners[0].getHand(),
+                                    getActivePlayer(GameDetails.getPlayers()))
+        if winning_hand == 'tie':
+            winners.append(getActivePlayer(GameDetails.getPlayers()))
+        elif winning_hand == 'one': # Change to two for high games
+            winners = [getActivePlayer(GameDetails.getPlayers())]
+            # TODO Trigger Show Hand Listener
+
+    return winners
 
 def getBestHand(hand_one, hand_two):
     rank_function_list = [

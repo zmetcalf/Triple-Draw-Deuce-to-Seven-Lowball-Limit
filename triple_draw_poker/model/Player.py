@@ -1,6 +1,7 @@
 class Player:
 
     def __init__(self, bankroll):
+        self.hand = []
         self.is_player_view = False
         self.bankroll = bankroll
         self.bet_this_street = 0.0
@@ -11,6 +12,9 @@ class Player:
         self.is_sitting_out = False
         self.is_SB = False
         self.is_BB = False
+
+    def getHand(self):
+        return self.hand
 
     def getPlayerViewStatus(self):
         return self.is_player_view
@@ -76,6 +80,15 @@ class Player:
     def setIsBB(self):
         self.bet_this_street = 1
         self.is_BB = True
+
+    def drawCard(self, card):
+        self.hand.append(card)
+
+    def discardCard(self, card):
+        self.hand.remove(card)
+
+    def foldHand(self):
+        self.hand = []
 
     def collectPot(self, amount):
         self.bankroll += amount
