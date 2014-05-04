@@ -1,21 +1,16 @@
 from triple_draw_poker.controller.PlayerController import changeActivePlayer, \
         getActivePlayer, getDealer, playerBet
 
-from triple_draw_poker.model.GameDetails import GameDetails
-from triple_draw_poker.model.HandDetails import HandDetails
+def postBlinds(game_details):
+    if len(game_details.getPlayers()) > 2:
+        changeActivePlayer(game_details.getPlayers()) # Dealer posts SB Heads-Up
+    getActivePlayer(game_details.getPlayers()).setIsSB()
+    playerBet(game_details, game_details.getBetLevel() * 0.5, 0)
 
-def postBlinds(GameDetails, HandDetails):
-    if len(GameDetails.getPlayers()) > 2:
-        changeActivePlayer(GameDetails.getPlayers()) # Dealer posts SB Heads-Up
-    getActivePlayer(GameDetails.getPlayers()).setIsSB()
-    playerBet(HandDetails, GameDetails.getPlayers(),
-              GameDetails.getBetLevel() * 0.5, 0)
+    changeActivePlayer(game_details.getPlayers())
+    getActivePlayer(game_details.getPlayers()).setIsBB()
+    playerBet(game_details, game_details.getBetLevel(), 0)
 
-    changeActivePlayer(GameDetails.getPlayers())
-    getActivePlayer(GameDetails.getPlayers()).setIsBB()
-    playerBet(HandDetails, GameDetails.getPlayers(),
-              GameDetails.getBetLevel(), 0)
+    game_details.getHandDetails().incrementRaised()
 
-    HandDetails.incrementRaised()
-
-    changeActivePlayer(GameDetails.getPlayers())
+    changeActivePlayer(game_details.getPlayers())

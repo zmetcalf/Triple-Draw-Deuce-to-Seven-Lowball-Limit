@@ -12,8 +12,9 @@ class GameControllerTests(unittest.TestCase):
         self.game_controller.setupHand()
 
     def testHandDetails(self):
-        self.assertEqual(self.game_controller.hand_details.getPot(),
-                          self.game_controller.hand_details.pot)
+        self.assertEqual(
+            self.game_controller.game_details.getHandDetails().getPot(),
+            self.game_controller.game_details.getHandDetails().pot)
 
 if __name__ == '__main__':
     unittest.main()

@@ -1,7 +1,5 @@
 import random
 
-from triple_draw_poker.model.HandDetails import HandDetails
-
 def getActivePlayer(players):
     for player in players:
         if player.getActiveStatus():
@@ -45,9 +43,9 @@ def getDealer(players):
             return player
     return False
 
-def playerBet(HandDetails, players, amount, raises):
-    HandDetails.getPot().addBet(amount)
-    getActivePlayer(players).bet(amount, raises)
+def playerBet(GameDetails, amount, raises):
+    GameDetails.getHandDetails().getPot().addBet(amount)
+    getActivePlayer(GameDetails.getPlayers()).bet(amount, raises)
 
 def setInactiveAllPlayers(players):
     for player in players:

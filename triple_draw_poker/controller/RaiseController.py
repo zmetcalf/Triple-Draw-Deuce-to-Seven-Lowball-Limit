@@ -2,15 +2,12 @@ from triple_draw_poker.controller.AmountToCallController import getAmountToCall
 from triple_draw_poker.controller.PlayerController import changeActivePlayer, \
     playerBet, setRaiser
 
-from triple_draw_poker.model.GameDetails import GameDetails
-from triple_draw_poker.model.HandDetails import HandDetails
-
-def raiseBet(GameDetails, HandDetails):
-    amount_to_call = getAmountToCall(GameDetails, HandDetails)
-    HandDetails.incrementRaised()
-    setRaiser(GameDetails.getPlayers())
-    playerBet(HandDetails, GameDetails.getPlayers(),
-                          HandDetails.getStreetPremium() *
-                          GameDetails.getBetLevel() * (amount_to_call + 1),
-                          amount_to_call + 1)
-    changeActivePlayer(GameDetails.getPlayers())
+def raiseBet(game_details):
+    amount_to_call = getAmountToCall(game_details)
+    game_details.getHandDetails().incrementRaised()
+    setRaiser(game_details.getPlayers())
+    playerBet(game_details,
+              game_details.getHandDetails().getStreetPremium() *
+              game_details.getBetLevel() * (amount_to_call + 1),
+              amount_to_call + 1)
+    changeActivePlayer(game_details.getPlayers())

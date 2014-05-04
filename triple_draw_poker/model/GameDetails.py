@@ -2,6 +2,7 @@
 # This includes the players and initial settings
 
 from triple_draw_poker.controller.PlayerController import initDealer
+from triple_draw_poker.model.HandDetails import HandDetails
 from triple_draw_poker.model.Player import Player
 
 class GameDetails:
@@ -14,9 +15,13 @@ class GameDetails:
             self.players.append(Player(self.bankroll))
         initDealer(self.players)
         self.bet_level = 10
+        self.hand_details = HandDetails()
 
     def getBetLevel(self):
         return self.bet_level
+
+    def getHandDetails(self):
+        return self.hand_details
 
     def getNumberOfPlayers(self):
         return self.number_of_players
