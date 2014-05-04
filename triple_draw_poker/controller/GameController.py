@@ -2,7 +2,6 @@ from triple_draw_poker.controller.ButtonController import getButtons
 from triple_draw_poker.controller.InitController import initHand
 from triple_draw_poker.controller.RaiseController import raiseBet
 from triple_draw_poker.model.GameDetails import GameDetails
-from triple_draw_poker.model.HandDetails import HandDetails
 
 class GameController:
 

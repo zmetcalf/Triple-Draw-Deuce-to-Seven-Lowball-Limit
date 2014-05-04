@@ -5,7 +5,6 @@ sys.path.append('../../Triple-Draw-Deuce-to-Seven-Lowball-Limit')
 
 from triple_draw_poker.controller.InitController import initHand
 from triple_draw_poker.model.GameDetails import GameDetails
-from triple_draw_poker.model.HandDetails import HandDetails
 
 class InitControllerTests(unittest.TestCase):
     def setUp(self):

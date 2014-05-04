@@ -11,12 +11,10 @@ from triple_draw_poker.controller.Lowball27HandRankController import getLowballW
       checkIfTwoPaired, getAceHighList, checkIfRoyalFlush, checkIfStraightFlush, \
       getBestHand
 from triple_draw_poker.model.GameDetails import GameDetails
-from triple_draw_poker.model.HandDetails import HandDetails
 
 class Lowball27HandRankControllerTests(unittest.TestCase):
     def setUp(self):
         self.game_details = GameDetails()
-        self.hand_details = HandDetails()
         self.royal_flush = [
             Card('SPADE', 1),
             Card('SPADE', 13),
