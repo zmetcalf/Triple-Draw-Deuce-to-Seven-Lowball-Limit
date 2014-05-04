@@ -13,7 +13,7 @@ class GameController:
         initHand(self.game_details)
 
     def getButtons(self):
-        return getButtons(self.game_details, self.hand_details)
+        return getButtons(self.game_details)
 
     def getTableInfo():
         # Returns dealer button, active player, BR, pot
@@ -36,7 +36,7 @@ class GameController:
         return False
 
     def raiseBet():
-        raiseBet(self.game_details, self.hand_details)
+        raiseBet(self.game_details)
 
     def showdown():
         # This may go into call()

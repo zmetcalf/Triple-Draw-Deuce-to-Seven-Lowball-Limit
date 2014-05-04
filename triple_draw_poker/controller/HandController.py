@@ -1,30 +1,29 @@
 from triple_draw_poker.controller.PlayerController import changeActivePlayer, \
       getActivePlayer
 
-from triple_draw_poker.model.GameDetails import GameDetails
-from triple_draw_poker.model.HandDetails import HandDetails
-
-def advanceHand(HandDetails, GameDetails):
-    if HandDetails.getRaised():
-        changeActivePlayer(GameDetails.getPlayers())
-        active_player = getActivePlayer(GameDetails.getPlayers())
-        if active_player.getBetThisStreet() == HandDetails.getRaised():
-            advanceStreet(HandDetails, GameDetails)
+def advanceHand(game_details):
+    if game_details.getHandDetails().getRaised():
+        changeActivePlayer(game_details.getPlayers())
+        active_player = getActivePlayer(game_details.getPlayers())
+        if active_player.getBetThisStreet() == \
+            game_details.getHandDetails().getRaised():
+                advanceStreet(game_details)
     else:
-        active_player = getActivePlayer(GameDetails.getPlayers())
+        active_player = getActivePlayer(game_details.getPlayers())
         if active_player.getDealerStatus():
-            advanceStreet(HandDetails, GameDetails)
+            advanceStreet(game_details)
         else:
-            changeActivePlayer(GameDetails.getPlayers())
+            changeActivePlayer(game_details.getPlayers())
 
-def advanceStreet(HandDetails, GameDetails):
-    if HandDetails.getStreet() < HandDetails.getNumberOfStreets() - 1:
-        HandDetails.incrementStreet()
-        HandDetails.changeInDraw()
+def advanceStreet(game_details):
+    if game_details.getHandDetails().getStreet() < \
+        game_details.getHandDetails().getNumberOfStreets() - 1:
+            game_details.getHandDetails().incrementStreet()
+            game_details.getHandDetails().changeInDraw()
     else:
-        return showdown(HandDetails, GameDetails)
+        return showdown(game_details)
 
-def showdown(HandDetails, GameDetails):
+def showdown(game_details):
     # TODO Find Winner
     # TODO Scoop or split pot to winner
     # DO NOT ADVANCE DEALER!!!
