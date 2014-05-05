@@ -1,8 +1,6 @@
 from triple_draw_poker.controller.PlayerController import getActivePlayer, \
       getPlayersInHand
 
-from triple_draw_poker.model.GameDetails import GameDetails
-
 def getLowballWinner(GameDetails):
     # Start on Active Player or Dealer - advanceHand leaves it on Active Player
     winners = [getActivePlayer(GameDetails.getPlayers())]

@@ -8,6 +8,14 @@ class HandDetails:
         self.street = 0
         self.number_of_streets = 4
         self.in_draw = False
+        self.hands = []
+        self.dealt_cards_index = 0
+
+    def getDealtCardsIndex(self):
+        return dealt_cards_index
+
+    def getHands(self):
+        return self.hands
 
     def getPot(self):
         return self.pot
@@ -28,6 +36,12 @@ class HandDetails:
 
     def getInDraw(self):
         return self.in_draw
+
+    def setDealtCardsIndex(self, index):
+        self.dealt_cards_index = index
+
+    def addHand(self, hand):
+        self.hands.append(hand)
 
     def incrementRaised(self):
         self.raised += 1

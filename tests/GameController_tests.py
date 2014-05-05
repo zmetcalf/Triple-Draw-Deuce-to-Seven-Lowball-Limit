@@ -9,7 +9,7 @@ class GameControllerTests(unittest.TestCase):
 
     def setUp(self):
         self.game_controller = GameController()
-        self.game_controller.setupHand()
+        # self.game_controller.setupHand()
 
     def testHandDetails(self):
         self.assertEqual(

@@ -1,7 +1,7 @@
 import os, pygame, math
 from pygame.locals import *
 import random
-                             
+
 class CardGroup:
 
     def __init__(self,cards=[]):
@@ -13,11 +13,11 @@ class CardGroup:
         for c in self.cards:
             rectbuf.append(pygame.Rect(c.rect))
 
-        random.shuffle(self.cards)        
+        random.shuffle(self.cards)
 
         for i in range(len(rectbuf)):
             self.cards[i].rect = rectbuf[i]
-        
+
     def collectAll(self,x,y):
         for c in self.cards:
             c.rect.x = x;
@@ -30,76 +30,41 @@ class CardGroup:
     def getCardAt(self,idx):
         fc = self.cards.pop(idx)
         self.cards.append(fc)
-        return fc  
-        
+        return fc
+
     def popCards(self, cards):
         for c in cards:
             #pop card
             self.cards.remove(c)
             self.cards.append(c)
-    
-        
-    def getCards(self,rect):
-        r = None
-        selCards = []
-        for c in self.cards:
-            if rect.contains(c.rect):
-                c.selected = 1
-                selCards.append(c)
-                                
-                # disconnect card
-                if c.parent:
-                    c.parent.child = None
-                
-                if c.child:
-                    c.child.parent = None
-                    self.dropCard(c.child)
 
-                c.child = None
-                c.parent = None
+    def getCards(self):
+        return self.cards
 
-                # add to rectangle                    
-                if not r:
-                    r = pygame.Rect(c.rect)
-                else:
-                    r.union_ip(c.rect)
-        if r:
-            r.x-=3
-            r.y-=3
-            r.width+=6
-            r.height+=6
-
-            self.popCards(selCards)
-                
-            return(r,selCards)
-        else:
-            rect.size = (0,0)
-            return(rect,[]) 
-    
     def getCard(self,x,y,popsingle=False):
         for i in range(len(self.cards)-1,-1,-1):
             if self.cards[i].rect.collidepoint(x, y):
                 fc = self.cards.pop(i)
-                self.cards.append(fc)  
+                self.cards.append(fc)
                 if fc.parent:
-                    fc.parent.child = None         
+                    fc.parent.child = None
                     fc.parent = None
-    
+
                 if popsingle:
-                    if fc.child:       
+                    if fc.child:
                         fc.child.parent = None
                         self.dropCard(fc.child)
                         fc.child = None
-                else:                
+                else:
                     c = fc.child
                     while c:
                         self.cards.remove(c)
                         self.cards.append(c)
-                        c = c.child           
+                        c = c.child
                 return fc
-                       
+
         return None
-        
+
     def getOneCard(self,x,y): # Copy of getCard() to rework
         for i in range(len(self.cards)-1,-1,-1): # Loop iterates until it reaches the card clicked
             if self.cards[i].rect.collidepoint(x, y):

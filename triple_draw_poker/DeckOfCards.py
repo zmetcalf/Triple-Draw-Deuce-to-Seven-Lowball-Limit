@@ -187,9 +187,11 @@ class DeckOfCards:
         self.selectionRect = pygame.Rect((0,0,0,0)) # not sure if this creates pygame object, but should select a rectangle of pixels?
         self.selectionCards = []  # initialize list of seclectionCards
 
-        ci = CardImages() # ci creates a deck of cards
+        self.gameController = GameController()
 
-        cards = [] # initialize list of cards
+        ci = CardImages()
+
+        cards = []
 
         # loop through 52 cards - cards.append adds card to list -
         # Card() Creates object with the variables from ci which is list cardImages to pull from
@@ -197,14 +199,15 @@ class DeckOfCards:
         for i in range(0,52):
             cards.append(Card(ci.getCardNbr(i),ci.getBack(), 30, 30, i))
 
-        self.cardGroup = CardGroup(cards) # creates cardGroup object from card list
-        self.cardGroup.shuffle() # uses shuffle function on cardGroup
+        self.cardGroup = CardGroup(cards)
+        self.cardGroup.shuffle()
+
+        self.gameController.setupHand(self.cardGroup.getCards())
 
         self.burnDeck = []
         self.northDeck = []
         self.southDeck = []
 
-        self.gameController = GameController()
 
         self.mode = self.INITIAL_DEAL
 
@@ -323,7 +326,6 @@ class DeckOfCards:
                         self.buttonReturn = self.buttonGroup.pressed(
                                             event.pos[0], event.pos[1])
                         if self.buttonReturn:
-                            print self.buttonReturn
                             self.buttonGroup.hideButton(self.buttonReturn)
 
             # DRAWING - Code good for now.

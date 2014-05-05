@@ -8,8 +8,8 @@ class GameController:
     def __init__(self):
         self.game_details = GameDetails()
 
-    def setupHand(self):
-        initHand(self.game_details)
+    def setupHand(self, cards):
+        initHand(self.game_details, cards)
 
     def getButtons(self):
         return getButtons(self.game_details)
