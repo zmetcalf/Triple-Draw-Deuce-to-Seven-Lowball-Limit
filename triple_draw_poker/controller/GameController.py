@@ -16,23 +16,23 @@ class GameController:
 
     def getTableInfo():
         # Returns dealer button, active player, BR, pot
-        return False
+        pass
 
     def getPlayer():
         # Returns player details
-        return False
+        pass
 
     def fold():
         # Handles fold input from user
-        return False
+        pass
 
     def check():
         # Handles check input from user
-        return False
+        pass
 
     def call():
         # Handles call input from user
-        return False
+        pass
 
     def raiseBet():
         raiseBet(self.game_details)

@@ -3,15 +3,17 @@ from triple_draw_poker.controller.PlayerController import changeActivePlayer, \
 
 def initDeal(game_details, cards):
     in_hand_players = getPlayersInHand(game_details.getPlayers())
-    pointer = dealer_index = in_hand_players(getDealer(
+    pointer = dealer_index = game_details.getPlayers().index(getDealer(
         game_details.getPlayers()))
+
+    pointer += 1
 
     card_index = 0
 
-    for cards_dealt in range(0, 5):
+    for _ in range(0, 5):
         while pointer < len(in_hand_players) - 1:
             pointer += 1
-
+            in_hand_players[pointer]
         pointer = 0
 
         while pointer <= dealer_index:
