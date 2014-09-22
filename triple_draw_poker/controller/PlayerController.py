@@ -1,21 +1,25 @@
 import random
 
+
 def getActivePlayer(players):
     for player in players:
         if player.getActiveStatus():
             return player
     return False
 
+
 def initDealer(players):
     x = random.randint(0, len(players) - 1)
     players[x].setDealer()
     players[x].setActive()
+
 
 def checkIfDealerSet(players):
     for player in players:
         if player.getDealerStatus():
             return True
     return False
+
 
 def advanceDealer(players):
     pointer = dealer_index = players.index(getDealer(players))
@@ -37,19 +41,23 @@ def advanceDealer(players):
             return
         pointer += 1
 
+
 def getDealer(players):
     for player in players:
         if player.getDealerStatus():
             return player
     return False
 
+
 def playerBet(GameDetails, amount, raises):
     GameDetails.getHandDetails().getPot().addBet(amount)
     getActivePlayer(GameDetails.getPlayers()).bet(amount, raises)
 
+
 def setInactiveAllPlayers(players):
     for player in players:
         player.setInactive()
+
 
 def setRaiser(players):
     for player in players:
@@ -58,8 +66,9 @@ def setRaiser(players):
         else:
             player.setNonRaiser()
 
+
 def changeActivePlayer(players):
-    pointer = active_index =  players.index(getActivePlayer(players))
+    pointer = active_index = players.index(getActivePlayer(players))
     players[pointer].setInactive()
     while pointer < len(players) - 1:
         pointer += 1
@@ -75,9 +84,10 @@ def changeActivePlayer(players):
             return
         pointer += 1
 
+
 def getPlayersInHand(players):
-    active_players = 0
+    active_players = []
     for player in players:
         if player.getInHand():
-            active_players += 1
+            active_players.append(player)
     return active_players

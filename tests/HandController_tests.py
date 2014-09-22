@@ -3,8 +3,10 @@ import unittest
 
 sys.path.append('../../Triple-Draw-Deuce-to-Seven-Lowball-Limit')
 
-from triple_draw_poker.controller.HandController import advanceHand, advanceStreet
+from triple_draw_poker.controller.HandController import advanceHand, \
+    advanceStreet
 from triple_draw_poker.model.GameDetails import GameDetails
+
 
 class HandControllerTests(unittest.TestCase):
     def setUp(self):
@@ -45,10 +47,10 @@ class HandControllerTests(unittest.TestCase):
         self.assertFalse(self.game_details.getPlayers()[1].getActiveStatus())
 
     def testAdvanceStreet(self):
-        advanceStreet(self.game_details) # First Draw - Flop
+        advanceStreet(self.game_details)  # First Draw - Flop
         self.assertEqual(self.game_details.getHandDetails().getStreet(), 1)
-        advanceStreet(self.game_details) # Second Draw - Turn
+        advanceStreet(self.game_details)  # Second Draw - Turn
         self.assertEqual(self.game_details.getHandDetails().getStreet(), 2)
-        advanceStreet(self.game_details)# Third Draw - River
+        advanceStreet(self.game_details)  # Third Draw - River
         self.assertEqual(self.game_details.getHandDetails().getStreet(), 3)
         self.assertTrue(advanceStreet(self.game_details))

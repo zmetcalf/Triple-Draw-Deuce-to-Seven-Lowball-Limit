@@ -1,5 +1,6 @@
 from triple_draw_poker.controller.PlayerController import changeActivePlayer, \
-      getActivePlayer, getDealer, getPlayersInHand
+    getActivePlayer, getDealer, getPlayersInHand
+
 
 def initDeal(game_details, cards):
     in_hand_players = getPlayersInHand(game_details.getPlayers())
@@ -8,16 +9,15 @@ def initDeal(game_details, cards):
 
     pointer += 1
 
-    card_index = 0
-
     for _ in range(0, 5):
         while pointer < len(in_hand_players) - 1:
             pointer += 1
-            in_hand_players[pointer]
+            in_hand_players[pointer].drawCard(cards.pop())
         pointer = 0
 
         while pointer <= dealer_index:
             pointer += 1
+            in_hand_players[pointer].drawCard(cards.pop())
 
 
 def advanceHand(game_details):
@@ -25,7 +25,7 @@ def advanceHand(game_details):
         changeActivePlayer(game_details.getPlayers())
         active_player = getActivePlayer(game_details.getPlayers())
         if active_player.getBetThisStreet() == \
-            game_details.getHandDetails().getRaised():
+           game_details.getHandDetails().getRaised():
                 advanceStreet(game_details)
     else:
         active_player = getActivePlayer(game_details.getPlayers())
@@ -34,13 +34,15 @@ def advanceHand(game_details):
         else:
             changeActivePlayer(game_details.getPlayers())
 
+
 def advanceStreet(game_details):
     if game_details.getHandDetails().getStreet() < \
-        game_details.getHandDetails().getNumberOfStreets() - 1:
+       game_details.getHandDetails().getNumberOfStreets() - 1:
             game_details.getHandDetails().incrementStreet()
             game_details.getHandDetails().changeInDraw()
     else:
         return showdown(game_details)
+
 
 def showdown(game_details):
     # TODO Find Winner

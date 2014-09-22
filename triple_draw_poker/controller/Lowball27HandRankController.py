@@ -1,21 +1,23 @@
 from triple_draw_poker.controller.PlayerController import getActivePlayer, \
-      getPlayersInHand
+    getPlayersInHand, changeActivePlayer
+
 
 def getLowballWinner(GameDetails):
     # Start on Active Player or Dealer - advanceHand leaves it on Active Player
     winners = [getActivePlayer(GameDetails.getPlayers())]
     # TODO Trigger Show Hand Listener
-    for i in range(0, getPlayersInHand(GameDetails.getPlayers())):
+    for i in range(0, len(getPlayersInHand(GameDetails.getPlayers()))):
         changeActivePlayer(GameDetails.getPlayers())
         winning_hand = getBestHand(winners[0].getHand(),
-                                    getActivePlayer(GameDetails.getPlayers()))
+                                   getActivePlayer(GameDetails.getPlayers()))
         if winning_hand == 'tie':
             winners.append(getActivePlayer(GameDetails.getPlayers()))
-        elif winning_hand == 'one': # Change to two for high games
+        elif winning_hand == 'one':  # Change to two for high games
             winners = [getActivePlayer(GameDetails.getPlayers())]
             # TODO Trigger Show Hand Listener
 
     return winners
+
 
 def getBestHand(hand_one, hand_two):
     rank_function_list = [
@@ -44,6 +46,7 @@ def getBestHand(hand_one, hand_two):
             return 'two'
     return False
 
+
 def getAceHighList(card_list):
     ace_high_list = card_list
     for card in ace_high_list:
@@ -51,17 +54,20 @@ def getAceHighList(card_list):
             card.setRank(14)
     return ace_high_list
 
+
 def checkIfRoyalFlush(card_list):
     if checkIfBroadway(card_list) and checkIfFlush(card_list):
         return True
     return False
+
 
 def checkIfStraightFlush(card_list):
     if checkIfStraight(card_list) and checkIfFlush(card_list):
         return checkIfStraight(card_list)
     return False
 
-def checkIfFourOfKind(card_list): # Needs reworked for Hold'em Games
+
+def checkIfFourOfKind(card_list):  # Needs reworked for Hold'em Games
     ace_high_list = getAceHighList(card_list)
     rank_list = []
     for card in ace_high_list:
@@ -72,6 +78,7 @@ def checkIfFourOfKind(card_list): # Needs reworked for Hold'em Games
         return rank_list[1]
     return False
 
+
 def checkIfFullHouse(card_list):
     ace_high_list = getAceHighList(card_list)
     triplet = checkIfThreeOfKind(ace_high_list)
@@ -80,11 +87,13 @@ def checkIfFullHouse(card_list):
         return False
     return [triplet, pair[0]]
 
+
 def checkIfFlush(card_list):
     for card in card_list:
         if card_list[0].getSuit() != card.getSuit():
             return False
     return checkHighCard(card_list)
+
 
 def checkIfStraight(card_list):
     if checkIfBroadway(card_list):
@@ -103,7 +112,8 @@ def checkIfStraight(card_list):
         check_rank = straight_check_list[rank]
     return straight_check_list[4]
 
-def checkIfThreeOfKind(card_list): # Needs reworked for Hold'em Games
+
+def checkIfThreeOfKind(card_list):  # Needs reworked for Hold'em Games
     ace_high_list = getAceHighList(card_list)
     rank_list = []
     for card in ace_high_list:
@@ -112,6 +122,7 @@ def checkIfThreeOfKind(card_list): # Needs reworked for Hold'em Games
         if rank_list.count(rank) == 3:
             return rank
     return False
+
 
 def checkIfTwoPaired(card_list):
     ace_high_list = getAceHighList(card_list)
@@ -129,9 +140,10 @@ def checkIfTwoPaired(card_list):
     if len(pairs) == 2:
         pairs.sort()
         pairs.reverse()
-        pairs.append(kicker) # Kicker is last
+        pairs.append(kicker)  # Kicker is last
         return pairs
     return False
+
 
 def checkIfPaired(card_list):
     ace_high_list = getAceHighList(card_list)
@@ -151,6 +163,7 @@ def checkIfPaired(card_list):
             return hand_list
     return False
 
+
 def checkHighCard(card_list):
     ace_high_list = getAceHighList(card_list)
     high_card_list = []
@@ -160,6 +173,7 @@ def checkHighCard(card_list):
     high_card_list.reverse()
     return high_card_list
 
+
 def checkIfBroadway(card_list):
     straight_check_list = []
     for card in card_list:
@@ -168,6 +182,7 @@ def checkIfBroadway(card_list):
     if straight_check_list == [1, 10, 11, 12, 13]:
         return 14
     return False
+
 
 def checkIfWheel(card_list):
     straight_check_list = []
